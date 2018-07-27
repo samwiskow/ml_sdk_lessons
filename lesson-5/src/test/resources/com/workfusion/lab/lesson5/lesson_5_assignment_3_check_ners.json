@@ -1,0 +1,1 @@
+{"@type":"java.util.ArrayList","@items":[{"@type":"java.util.HashMap","end":{"@type":"int","value":109},"text":"12345678900","type":"invoice","begin":{"@type":"int","value":98}},{"@type":"java.util.HashMap","end":{"@type":"int","value":233},"text":"00123655478","type":"invoice","begin":{"@type":"int","value":222}}]}

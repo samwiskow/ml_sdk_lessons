@@ -1,0 +1,1 @@
+{"@type":"java.util.ArrayList","@items":[{"@type":"java.util.HashMap","end":{"@type":"int","value":86},"text":"Germany","type":"country","begin":{"@type":"int","value":79}},{"@type":"java.util.HashMap","end":{"@type":"int","value":277},"text":"USA","type":"country","begin":{"@type":"int","value":274}}]}

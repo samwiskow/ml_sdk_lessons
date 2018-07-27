@@ -1,0 +1,12 @@
+PROJECT Cognitive Bot Development
+CLIENT John Doe
+ADDRESS ONE INFINITE LOOP CUPERTINO, CA, 95014, USA
+INVOICE 16987555695
+EMAIL johndoe@example.net
+DATE May 19, 2017
+PROJECT Cognitive Bot Development
+CLIENT Lara Harrow
+ADDRESS California Route 2, CA, 94129, USA
+INVOICE 16987555695
+EMAIL jackharrow@example.com
+DATE May 19, 2017

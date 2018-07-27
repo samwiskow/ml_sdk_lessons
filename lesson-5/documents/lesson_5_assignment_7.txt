@@ -1,0 +1,12 @@
+PROJECT Cognitive Bot Development
+CLIENT John Doe
+ADDRESS Berlin, DE, 95014, Germany
+INVOICE # 12345678900
+EMAIL johndoe@example.net
+DATE May 19, 2017
+PROJECT Cognitive Bot Development
+CLIENT Lara Harrow
+INVOICE # 00123655478
+ADDRESS California Route 2, CA, 94129, USA
+EMAIL jackharrow@example.com
+DATE May 19, 2017

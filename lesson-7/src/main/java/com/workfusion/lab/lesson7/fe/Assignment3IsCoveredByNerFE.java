@@ -1,0 +1,37 @@
+package com.workfusion.lab.lesson7.fe;
+
+import java.util.Collection;
+import java.util.Collections;
+
+import com.workfusion.vds.sdk.api.nlp.fe.Feature;
+import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
+import com.workfusion.vds.sdk.api.nlp.model.Document;
+import com.workfusion.vds.sdk.api.nlp.model.Element;
+import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
+
+/**
+ * Assignment 3
+ */
+public class Assignment3IsCoveredByNerFE<T extends Element> implements FeatureExtractor<T> {
+
+    /**
+     * Type of {@link NamedEntity}.
+     */
+    private String type;
+
+    /**
+     * Create an instance of {@link FeatureExtractor} that detects if a token is inside the {@link NamedEntity} of the specified {@code type}.
+     * @param type  type of {@link NamedEntity}
+     */
+    public Assignment3IsCoveredByNerFE(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public Collection<Feature> extract(Document document, T element) {
+
+        // TODO:  PUT YOU CODE HERE
+
+        return Collections.emptyList();
+    }
+}

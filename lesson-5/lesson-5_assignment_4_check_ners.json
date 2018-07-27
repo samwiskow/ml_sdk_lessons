@@ -1,0 +1,1 @@
+{"@type":"java.util.ArrayList","@items":[{"@type":"java.util.HashMap","end":{"@type":"int","value":113},"text":"johndoe@example.net","type":"email","begin":{"@type":"int","value":94}},{"@type":"java.util.HashMap","end":{"@type":"int","value":261},"text":"jackharrow@example.com","type":"email","begin":{"@type":"int","value":239}}]}
