@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson10.run;
 
 import java.nio.file.Path;
@@ -45,4 +48,5 @@ public class Assignment1ModelExecutionRunner {
 
         ModelRunner.run(Assignment1Model.class, configuration);
     }
+
 }

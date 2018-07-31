@@ -1,10 +1,12 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
@@ -14,12 +16,13 @@ import com.workfusion.lab.lesson5.config.Assignment2ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment3ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment4ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment5ModelConfiguration;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
+import com.workfusion.vds.sdk.api.nlp.model.EntityBoundary;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Sentence;
@@ -32,7 +35,7 @@ import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.SplitterTokenAnn
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Lesson5Test extends LessonTestBase {
+public class Lesson5Test extends BaseLessonTest {
 
     /**
      * Assignment 1:
@@ -409,4 +412,5 @@ public class Lesson5Test extends LessonTestBase {
         checkElementFeatures(providedElementFeatures, "lesson_5_assignment_7_check_fe.json");
 
     }
+
 }

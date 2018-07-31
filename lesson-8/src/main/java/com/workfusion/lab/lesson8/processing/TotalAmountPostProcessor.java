@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson8.processing;
 
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
@@ -12,5 +15,7 @@ public class TotalAmountPostProcessor implements Processor<IeDocument> {
     public void process(IeDocument document) {
 
         // TODO:  PUT YOU CODE HERE
+
     }
+
 }

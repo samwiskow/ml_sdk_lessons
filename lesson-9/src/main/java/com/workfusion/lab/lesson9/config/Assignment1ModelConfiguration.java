@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson9.config;
 
 import java.util.ArrayList;
@@ -74,4 +77,5 @@ public class Assignment1ModelConfiguration {
 
         return Collections.emptyList();
     }
+
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson7.fe;
 
 import java.util.Collection;
@@ -24,4 +27,5 @@ public class Assignment4NextTokenIsNumberFE<T extends Element> implements Featur
 
         return Collections.emptyList();
     }
+
 }

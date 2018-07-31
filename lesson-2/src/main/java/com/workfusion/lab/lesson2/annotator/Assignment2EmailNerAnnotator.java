@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson2.annotator;
 
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
@@ -25,4 +28,5 @@ public class Assignment2EmailNerAnnotator implements Annotator<Document> {
         //TODO: PUT YOUR CODE HERE
 
     }
+
 }

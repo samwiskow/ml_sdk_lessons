@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson8.fe;
 
 import java.util.Collection;
@@ -38,4 +41,5 @@ public class NerAbsolutePositionFE<T extends Element> implements FeatureExtracto
 
         return Collections.emptyList();
     }
+
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson1;
 
 import java.util.ArrayList;
@@ -7,14 +10,14 @@ import org.junit.Test;
 
 import com.workfusion.lab.lesson1.annotator.Assignment1TokenAnnotator;
 import com.workfusion.lab.lesson1.annotator.Assignment2SentenceAnnotator;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.Sentence;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 
-public class Lesson1Test extends LessonTestBase {
+public class Lesson1Test extends BaseLessonTest {
 
     /**
      * <p><b>Assignment 1</b></p>
@@ -76,5 +79,3 @@ public class Lesson1Test extends LessonTestBase {
     }
 
 }
-
-

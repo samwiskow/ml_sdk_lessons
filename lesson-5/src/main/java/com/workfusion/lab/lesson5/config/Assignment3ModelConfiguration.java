@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.config;
 
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
@@ -26,4 +29,5 @@ public class Assignment3ModelConfiguration {
     private final static String NER_TYPE = "invoice";
 
     // TODO:  PUT YOU CODE HERE
+
 }

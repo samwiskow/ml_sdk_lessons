@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson3;
 
 import java.util.Map;
@@ -10,7 +13,7 @@ import com.workfusion.lab.lesson3.fe.Assignment2NerFE;
 import com.workfusion.lab.lesson3.fe.Assignment3TableFE;
 import com.workfusion.lab.lesson3.fe.Assignment4FirstInSentenceFE;
 import com.workfusion.lab.lesson3.fe.Assignment5FirstInSentenceFE;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentComplete;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentStart;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
@@ -30,7 +33,7 @@ import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.MatcherTokenAnno
 import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.SplitterTokenAnnotator;
 import com.workfusion.vds.sdk.nlp.component.dictionary.CsvDictionaryKeywordProvider;
 
-public class Lesson3Test extends LessonTestBase {
+public class Lesson3Test extends BaseLessonTest {
 
     /**
      * <p><b>Assignment 1</b></p>
@@ -209,4 +212,5 @@ public class Lesson3Test extends LessonTestBase {
         // Checks the provided Features with the assignment 2 pattern
         checkElementFeatures(providedElementFeatures, "lesson_3_assignment_5_check.json");
     }
+
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson3.fe;
 
 import java.util.Arrays;
@@ -44,4 +47,5 @@ public class Assignment1KeywordFE<T extends Element> implements FeatureExtractor
 
         return Collections.emptyList();
     }
+
 }

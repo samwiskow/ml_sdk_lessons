@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson3.fe;
 
 import java.util.Collection;
@@ -25,4 +28,5 @@ public class Assignment4FirstInSentenceFE<T extends Element> implements FeatureE
 
         return Collections.emptyList();
     }
+
 }

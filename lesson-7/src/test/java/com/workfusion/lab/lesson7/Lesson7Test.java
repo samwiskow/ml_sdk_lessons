@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson7;
 
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ import com.workfusion.lab.lesson7.fe.Assignment2FE;
 import com.workfusion.lab.lesson7.fe.Assignment3IsCoveredByNerFE;
 import com.workfusion.lab.lesson7.fe.Assignment4ColumnIndexFE;
 import com.workfusion.lab.lesson7.fe.Assignment4NextTokenIsNumberFE;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
@@ -31,7 +34,7 @@ import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.MatcherTokenAnno
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Lesson7Test extends LessonTestBase {
+public class Lesson7Test extends BaseLessonTest {
 
     /**
      * Assignment 1:
@@ -242,7 +245,7 @@ public class Lesson7Test extends LessonTestBase {
         checkTokenAreProvided(document);
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, document, fes, true);
+        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, document, fes, false);
         // Checks the provided Features with the assignment pattern
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_4_check.json");
     }

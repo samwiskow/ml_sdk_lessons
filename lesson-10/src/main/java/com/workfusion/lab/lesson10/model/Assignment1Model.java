@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson10.model;
 
 import com.workfusion.lab.lesson10.config.Assignment1ModelConfiguration;
@@ -18,4 +21,5 @@ public class Assignment1Model extends GenericIeHypermodel {
 
     public Assignment1Model() throws Exception {
     }
+
 }

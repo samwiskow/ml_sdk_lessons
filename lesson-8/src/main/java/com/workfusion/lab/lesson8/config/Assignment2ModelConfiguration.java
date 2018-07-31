@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson8.config;
 
 import java.util.Collections;
@@ -61,5 +64,5 @@ public class Assignment2ModelConfiguration {
 
         return Collections.emptyList();
     }
-}
 
+}

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson10.fe;
 
 import java.util.ArrayList;
@@ -28,4 +31,5 @@ public class TableNumberFE<T extends Element> implements FeatureExtractor<T> {
 
         return result;
     }
+
 }

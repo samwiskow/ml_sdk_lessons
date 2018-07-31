@@ -1,7 +1,8 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson9;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Test;
@@ -12,11 +13,9 @@ import com.workfusion.lab.lesson9.run.Assignment1ModelExecutionRunner;
 import com.workfusion.lab.lesson9.run.Assignment1ModelTrainingRunner;
 import com.workfusion.lab.lesson9.run.Assignment2ModelExecutionRunner;
 import com.workfusion.lab.lesson9.run.Assignment2ModelTrainingRunner;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 
-import static com.workfusion.lab.lesson9.run.Assignment1ModelTrainingRunner.OUTPUT_DIR_PATH;
-
-public class Lesson9Test extends LessonTestBase {
+public class Lesson9Test extends BaseLessonTest {
 
     /**
      * Assignment 1:

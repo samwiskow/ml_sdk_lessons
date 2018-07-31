@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson8.fe;
 
 import java.util.Collection;
@@ -51,5 +54,5 @@ public class SimilarityKeysInPrevLineFE<T extends Element> implements FeatureExt
 
         return Collections.emptyList();
     }
-}
 
+}

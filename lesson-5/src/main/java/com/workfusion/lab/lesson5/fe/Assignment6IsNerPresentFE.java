@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.fe;
 
 import java.util.Collection;
@@ -30,4 +33,5 @@ public class Assignment6IsNerPresentFE<T extends Element> implements FeatureExtr
 
         return Collections.emptyList();
     }
+
 }

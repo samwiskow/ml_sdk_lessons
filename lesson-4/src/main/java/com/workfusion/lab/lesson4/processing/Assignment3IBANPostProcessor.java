@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson4.processing;
 
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
@@ -27,6 +30,5 @@ public class Assignment3IBANPostProcessor implements Processor<IeDocument> {
         //TODO: PUT YOUR CODE HERE
 
     }
-
 
 }

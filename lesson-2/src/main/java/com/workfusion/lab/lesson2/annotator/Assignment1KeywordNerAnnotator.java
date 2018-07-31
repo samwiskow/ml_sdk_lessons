@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson2.annotator;
 
 import java.util.Arrays;
@@ -36,4 +39,5 @@ public class Assignment1KeywordNerAnnotator implements Annotator<Document> {
         //TODO: PUT YOUR CODE HERE
 
     }
+
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson4;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import com.workfusion.lab.lesson4.processing.Assignment4AddCountryPostProcessor;
 import com.workfusion.lab.lesson4.processing.Assignment5PricePostProcessor;
 import com.workfusion.lab.lesson4.processing.Assignment6SimilarityPostProcessor;
 import com.workfusion.lab.lesson4.processing.Assignment7ExpandPostProcessor;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.similarity.StringSimilarityUtils;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
@@ -21,7 +24,7 @@ import com.workfusion.vds.sdk.api.nlp.model.Field;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 
 public class
-Lesson4Test extends LessonTestBase {
+Lesson4Test extends BaseLessonTest {
 
     /**
      * <p><b>Assignment 1</b></p>
@@ -197,7 +200,6 @@ Lesson4Test extends LessonTestBase {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment5PricePostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        writeFields(fields, "c:/1/lesson_4_assignment_5_check.json");
         checkFields(fields, "lesson_4_assignment_5_check.json");
     }
 
@@ -268,4 +270,5 @@ Lesson4Test extends LessonTestBase {
         // Checks the provided fields with the assignment's pattern
         checkFields(fields, "lesson_4_assignment_7_check.json");
     }
+
 }

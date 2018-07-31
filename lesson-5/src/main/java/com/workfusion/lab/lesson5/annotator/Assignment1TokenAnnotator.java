@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.annotator;
 
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;

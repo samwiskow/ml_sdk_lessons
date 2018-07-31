@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.config;
 
 import java.util.ArrayList;
@@ -61,4 +64,5 @@ class IsNerPresentFE<T extends Element> implements FeatureExtractor<T> {
         }
         return result;
     }
+
 }

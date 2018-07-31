@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.config;
 
 import java.util.Collection;
@@ -19,6 +22,7 @@ import static java.util.Collections.singletonList;
 public class Assignment7ModelConfiguration {
 
     // TODO:  PUT YOU CODE HERE
+
 }
 
 /**
@@ -51,4 +55,5 @@ class IsNumberIncludedFE<T extends Element> implements FeatureExtractor<T> {
         double value = text.matches(NUMBER_REGEX) ? 1.0 : 0.0;
         return singletonList(new Feature(FEATURE_NAME, value));
     }
+
 }

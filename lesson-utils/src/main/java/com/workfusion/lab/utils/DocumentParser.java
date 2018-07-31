@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.utils;
 
 import java.util.ArrayList;
@@ -133,7 +136,7 @@ public class DocumentParser {
      */
     public DocumentContent prepareDocumentContent(String html) {
         Element element = Jsoup.parse(html);
-        DocumentParser.FormattingVisitor formatter = new DocumentParser.FormattingVisitor();
+        FormattingVisitor formatter = new FormattingVisitor();
         NodeTraversor traversor = new NodeTraversor(formatter);
         traversor.traverse(element); // walk the DOM, and call .head() and .tail() for each node
         return formatter.getDocumentContent();
@@ -259,4 +262,5 @@ public class DocumentParser {
             return new DocumentContent(accum.toString(), tags);
         }
     }
+
 }

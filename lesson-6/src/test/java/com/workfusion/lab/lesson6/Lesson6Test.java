@@ -1,29 +1,30 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson6;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.Test;
 
 import com.workfusion.lab.lesson6.config.Assignment1ModelConfiguration;
 import com.workfusion.lab.lesson6.config.Assignment2ModelConfiguration;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
+import com.workfusion.vds.sdk.api.nlp.model.EntityBoundary;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Sentence;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
-import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.MatcherTokenAnnotator;
-import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.SplitterTokenAnnotator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Lesson6Test extends LessonTestBase {
+public class Lesson6Test extends BaseLessonTest {
 
     /**
      * Assignment 1:
@@ -134,4 +135,5 @@ public class Lesson6Test extends LessonTestBase {
         log("Checking that the first annotator is SplitterTokenAnnotator.");
         assertThat(fes.get(0).getClass()).isEqualTo(Assignment2ModelConfiguration.IsOnlyNumberInTokenFE.class);
     }
+
 }

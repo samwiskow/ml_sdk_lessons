@@ -1,10 +1,11 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson10;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
-import org.assertj.core.api.Condition;
 import org.junit.Test;
 
 import com.workfusion.lab.lesson10.fe.ColumnIndexFE;
@@ -14,19 +15,14 @@ import com.workfusion.lab.lesson10.run.Assignment1ModelExecutionRunner;
 import com.workfusion.lab.lesson10.run.Assignment1ModelTrainingRunner;
 import com.workfusion.lab.lesson10.run.Assignment2ModelExecutionRunner;
 import com.workfusion.lab.lesson10.run.Assignment2ModelTrainingRunner;
-import com.workfusion.lab.utils.LessonTestBase;
-import com.workfusion.nlp.uima.pipeline.constants.ConfigurationConstants;
-import com.workfusion.nlp.uima.pipeline.constants.PipelineConstants;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.nlp.uima.workflow.task.hpo.HpoConfiguration;
-import com.workfusion.vds.fe.EmptyFeatureExtractor;
-import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
-import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
 import static com.workfusion.lab.lesson10.run.Assignment1ModelExecutionRunner.OUTPUT_DIR_PATH;
 
-public class Lesson10Test extends LessonTestBase {
+public class Lesson10Test extends BaseLessonTest {
 
     /**
      * Assignment 1

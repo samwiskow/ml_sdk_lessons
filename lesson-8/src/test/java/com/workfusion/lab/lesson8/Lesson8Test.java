@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson8;
 
 import java.util.ArrayList;
@@ -13,7 +16,7 @@ import com.workfusion.lab.lesson8.fe.IsNerPresentFE;
 import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
 import com.workfusion.lab.lesson8.fe.NerAbsolutePositionFE;
 import com.workfusion.lab.lesson8.fe.SimilarityKeysInPrevLineFE;
-import com.workfusion.lab.utils.LessonTestBase;
+import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
@@ -24,7 +27,7 @@ import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 
-public class Lesson8Test extends LessonTestBase {
+public class Lesson8Test extends BaseLessonTest {
     /**
      * Assignment 1:
      * <p>
@@ -133,4 +136,5 @@ public class Lesson8Test extends LessonTestBase {
         // Checks the provided Features with the assignment 2 pattern
         checkElementFeatures(providedElementFeatures, "lesson_8_assignment_2_check_fe.json");
     }
+
 }
