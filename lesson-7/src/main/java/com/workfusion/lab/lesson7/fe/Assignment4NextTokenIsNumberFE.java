@@ -3,8 +3,9 @@
  */
 package com.workfusion.lab.lesson7.fe;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
@@ -22,10 +23,11 @@ public class Assignment4NextTokenIsNumberFE<T extends Element> implements Featur
 
     @Override
     public Collection<Feature> extract(Document document, T element) {
+        List<Feature> result = new ArrayList<>();
 
         // TODO:  PUT YOU CODE HERE
 
-        return Collections.emptyList();
+        return result;
     }
 
 }
