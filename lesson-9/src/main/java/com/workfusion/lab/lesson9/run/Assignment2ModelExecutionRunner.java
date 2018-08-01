@@ -23,10 +23,12 @@ public class Assignment2ModelExecutionRunner {
      * Model directory path to use.
      */
     public final static String MODEL_DIR_PATH = "results_assignment2/training/output/model";
+
     /**
      * Input directory path to use.
      */
     public final static String INPUT_DIR_PATH = "data/test";
+
     /**
      * Output directory path to use.
      */
