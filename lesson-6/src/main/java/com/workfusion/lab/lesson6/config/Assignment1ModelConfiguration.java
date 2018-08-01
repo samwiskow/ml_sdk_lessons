@@ -28,6 +28,10 @@ public class Assignment1ModelConfiguration {
      * Type for {@link NamedEntity} to use.
      */
     private final static String NER_TYPE_INVOICE = "invoice";
+
+    /**
+     * Type for {@link NamedEntity} to use.
+     */
     private final static String NER_TYPE_COUNTRY = "country";
 
     /**
