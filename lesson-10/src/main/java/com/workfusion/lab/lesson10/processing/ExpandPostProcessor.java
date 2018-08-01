@@ -16,7 +16,7 @@ public class ExpandPostProcessor implements Processor<IeDocument> {
 
     @Override
     public void process(IeDocument document) {
-        document.findFields()
+        document.findFields(FIELD_NAME)
                 .forEach(f -> {
                     if (f.getValue() != null) {
                         String value = f.getValue();
