@@ -3,8 +3,9 @@
  */
 package com.workfusion.lab.lesson8.fe;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
@@ -39,10 +40,11 @@ public class IsNerPresentFE<T extends Element> implements FeatureExtractor<T> {
 
     @Override
     public Collection<Feature> extract(Document document, T element) {
+        List<Feature> result = new ArrayList<>();
 
         // TODO:  PUT YOU CODE HERE
 
-        return Collections.emptyList();
+        return result;
     }
 
 }

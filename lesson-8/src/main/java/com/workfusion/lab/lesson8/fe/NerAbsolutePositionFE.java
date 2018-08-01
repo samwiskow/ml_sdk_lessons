@@ -3,20 +3,14 @@
  */
 package com.workfusion.lab.lesson8.fe;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
-import com.workfusion.vds.sdk.api.nlp.annotation.DependsOn;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
-import com.workfusion.vds.sdk.api.nlp.fe.annotation.FeatureName;
-import com.workfusion.vds.sdk.api.nlp.fe.annotation.Index;
-import com.workfusion.vds.sdk.api.nlp.fe.annotation.IndexType;
-import com.workfusion.vds.sdk.api.nlp.fe.annotation.Indexes;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
-import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
-import com.workfusion.vds.sdk.api.nlp.model.Token;
 
 /**
  * Determines if focus annotation is NER and the last NER in the document
@@ -36,10 +30,11 @@ public class NerAbsolutePositionFE<T extends Element> implements FeatureExtracto
      */
     @Override
     public Collection<Feature> extract(Document document, T element) {
+        List<Feature> result = new ArrayList<>();
 
         // TODO:  PUT YOU CODE HERE
 
-        return Collections.emptyList();
+        return result;
     }
 
 }
