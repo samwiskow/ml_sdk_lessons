@@ -34,7 +34,6 @@ public class Assignment2ModelExecutionRunner {
      */
     public final static String OUTPUT_DIR_PATH = "results_assignment2/extract";
 
-
     public static void main(String[] args) throws Exception {
         System.setProperty("WORKFLOW_LOG_FOLDER", "./logs/");
 
