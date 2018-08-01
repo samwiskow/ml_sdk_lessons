@@ -33,6 +33,9 @@ public class SimilarityKeysInPrevLineFE<T extends Element> implements FeatureExt
      */
     public static final String FEATURE_NAME = "cosSimilarity";
 
+    /**
+     * The words to look for similarity.
+     */
     private String keyword;
 
     public SimilarityKeysInPrevLineFE(String keyword) {
