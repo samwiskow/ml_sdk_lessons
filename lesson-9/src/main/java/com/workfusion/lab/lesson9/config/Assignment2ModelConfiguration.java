@@ -4,7 +4,7 @@
 package com.workfusion.lab.lesson9.config;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
@@ -69,11 +69,9 @@ public class Assignment2ModelConfiguration {
     @Named("featureExtractors")
     public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
         List<FeatureExtractor<Element>> featuresExtractors = new ArrayList<>();
-        switch (context.getField().getCode()) {
 
             // TODO:  PUT YOU CODE HERE
 
-        }
         return featuresExtractors;
     }
 
@@ -82,7 +80,7 @@ public class Assignment2ModelConfiguration {
 
         // TODO:  PUT YOU CODE HERE (IF NEEDED)
 
-        return Collections.emptyList();
+        return Arrays.asList();
     }
 
 }

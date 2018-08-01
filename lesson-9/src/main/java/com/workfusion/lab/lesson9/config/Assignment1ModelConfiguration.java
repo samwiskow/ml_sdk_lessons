@@ -4,7 +4,7 @@
 package com.workfusion.lab.lesson9.config;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
@@ -75,7 +75,7 @@ public class Assignment1ModelConfiguration {
 
         // TODO:  PUT YOU CODE HERE (IF NEEDED)
 
-        return Collections.emptyList();
+        return Arrays.asList();
     }
 
 }
