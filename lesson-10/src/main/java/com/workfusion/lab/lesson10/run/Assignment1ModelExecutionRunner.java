@@ -14,20 +14,20 @@ import com.workfusion.vds.sdk.run.config.LocalExecutionConfiguration;
 
 public class Assignment1ModelExecutionRunner {
 
-
     /**
      * Model directory path to use.
      */
     public final static String MODEL_DIR_PATH = "results_assignment1/training/output/model";
+
     /**
      * Input directory path to use.
      */
     public final static String INPUT_DIR_PATH = "data/test";
+
     /**
      * Output directory path to use.
      */
     public final static String OUTPUT_DIR_PATH = "results_assignment1/extract";
-
 
     public static void main(String[] args) throws Exception {
         System.setProperty("WORKFLOW_LOG_FOLDER", "./logs/");
