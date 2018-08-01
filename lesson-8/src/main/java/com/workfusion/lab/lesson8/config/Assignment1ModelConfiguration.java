@@ -5,6 +5,7 @@ package com.workfusion.lab.lesson8.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
@@ -61,39 +62,23 @@ public class Assignment1ModelConfiguration {
 
     @Named("annotators")
     public List<Annotator<Document>> getAnnotators(IeConfigurationContext context) {
-        List<Annotator<Document>> annotators = new ArrayList<>();
 
-        annotators.add(new SplitterTokenAnnotator(TOKEN_REGEX));
-        annotators.add(new EntityBoundaryAnnotator());
+        // TODO:  PUT YOU CODE HERE
 
-        switch (context.getField().getCode()) {
-            case FIELD_TOTAL_AMOUNT: {
-                annotators.add(getJavaPatternRegexNerAnnotator(NER_TYPE_TOTAL_AMOUNT, TOTAL_AMOUNT_REGEX));
-                break;
-            }
-        }
-        return annotators;
+        return Collections.emptyList();
     }
 
     @Named("featureExtractors")
     public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
-        List<FeatureExtractor<Element>> featuresExtractors = new ArrayList<>();
-        switch (context.getField().getCode()) {
 
-            case FIELD_TOTAL_AMOUNT: {
-                featuresExtractors.add(new NerAbsolutePositionFE<>());
-                featuresExtractors.add(new KeywordsPreviousLineFE<>(KEYWORD_SIMILARITY));
-                break;
-            }
-        }
-        return featuresExtractors;
+        // TODO:  PUT YOU CODE HERE
+
+        return Collections.emptyList();
     }
 
     @Named("processors")
     public List<Processor<IeDocument>> getProcessors() {
-        return Arrays.asList(
-                new TotalAmountPostProcessor()
-        );
+        return Collections.emptyList();
     }
 
 }
