@@ -28,6 +28,9 @@ import com.workfusion.vds.sdk.api.nlp.model.Token;
 @FeatureName(SimilarityKeysInPrevLineFE.FEATURE_NAME)
 public class SimilarityKeysInPrevLineFE<T extends Element> implements FeatureExtractor<T> {
 
+    /**
+     * Name of {@link Feature} the feature extractor produces.
+     */
     public static final String FEATURE_NAME = "cosSimilarity";
 
     private String keyword;
