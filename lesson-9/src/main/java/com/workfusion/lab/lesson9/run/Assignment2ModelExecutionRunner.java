@@ -19,7 +19,6 @@ import com.workfusion.vds.sdk.run.config.LocalExecutionConfiguration;
  */
 public class Assignment2ModelExecutionRunner {
 
-
     /**
      * Model directory path to use.
      */
