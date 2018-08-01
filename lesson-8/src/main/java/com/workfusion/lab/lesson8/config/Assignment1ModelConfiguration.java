@@ -5,12 +5,8 @@ package com.workfusion.lab.lesson8.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
-import com.workfusion.lab.lesson8.fe.NerAbsolutePositionFE;
-import com.workfusion.lab.lesson8.processing.TotalAmountPostProcessor;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.Named;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
@@ -23,10 +19,6 @@ import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 import com.workfusion.vds.sdk.api.nlp.processing.Processor;
-import com.workfusion.vds.sdk.nlp.component.annotator.EntityBoundaryAnnotator;
-import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.SplitterTokenAnnotator;
-
-import static com.workfusion.vds.sdk.nlp.component.annotator.ner.BaseRegexNerAnnotator.getJavaPatternRegexNerAnnotator;
 
 /**
  * The model configuration class.
@@ -62,23 +54,25 @@ public class Assignment1ModelConfiguration {
 
     @Named("annotators")
     public List<Annotator<Document>> getAnnotators(IeConfigurationContext context) {
+        List<Annotator<Document>> annotators = new ArrayList<>();
 
         // TODO:  PUT YOU CODE HERE
 
-        return Collections.emptyList();
+        return annotators;
     }
 
     @Named("featureExtractors")
     public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
+        List<FeatureExtractor<Element>> featuresExtractors = new ArrayList<>();
 
         // TODO:  PUT YOU CODE HERE
 
-        return Collections.emptyList();
+        return featuresExtractors;
     }
 
     @Named("processors")
     public List<Processor<IeDocument>> getProcessors() {
-        return Collections.emptyList();
+        return Arrays.asList();
     }
 
 }
