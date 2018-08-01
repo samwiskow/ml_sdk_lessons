@@ -23,8 +23,7 @@ import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.Field;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 
-public class
-Lesson4Test extends BaseLessonTest {
+public class Lesson4Test extends BaseLessonTest {
 
     /**
      * <p><b>Assignment 1</b></p>
