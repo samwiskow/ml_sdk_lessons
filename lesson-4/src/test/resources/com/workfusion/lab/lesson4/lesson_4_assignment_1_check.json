@@ -1,1 +1,1 @@
-{"@type":"java.util.ArrayList","@items":[{"@type":"java.util.HashMap","score":{"@type":"java.math.BigDecimal","value":"0.5"},"name":"date","end":{"@type":"int","value":96},"text":"April 07, 1997","begin":{"@type":"int","value":82},"value":"04/07/97"}]}
+{"@type":"java.util.ArrayList","@items":[{"@type":"com.workfusion.lab.model.TestField","name":"date","value":"04/07/97","score":"0.5","begin":82,"end":96,"text":"April 07, 1997"}]}
