@@ -5,8 +5,6 @@ package com.workfusion.lab.lesson7;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -19,15 +17,14 @@ import com.workfusion.lab.lesson7.fe.Assignment2FE;
 import com.workfusion.lab.lesson7.fe.Assignment3IsCoveredByNerFE;
 import com.workfusion.lab.lesson7.fe.Assignment4ColumnIndexFE;
 import com.workfusion.lab.lesson7.fe.Assignment4NextTokenIsNumberFE;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
-import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
-import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 import com.workfusion.vds.sdk.nlp.component.annotator.EntityBoundaryAnnotator;
 import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.MatcherTokenAnnotator;
@@ -71,7 +68,7 @@ public class Lesson7Test extends BaseLessonTest {
         checkElements(tokens, "lesson_7_assignment_1a_check.json");
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, fes);
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document, fes);
         // Checks the provided Features with the assignment pattern
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_1b_check.json");
     }
@@ -112,7 +109,7 @@ public class Lesson7Test extends BaseLessonTest {
         checkTokenAreProvided(document);
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, document, fes, true);
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document, document, fes, true);
         // Checks the provided Features with the assignment pattern
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_2_check.json");
     }
@@ -136,30 +133,24 @@ public class Lesson7Test extends BaseLessonTest {
      */
     @Test
     public void assignment3() throws Exception {
-        Document document;
-        ConfigurationData configurationData;
-        List<Annotator> annotators;
-        List<FeatureExtractor> fes;
-        Map<Element, Set<Feature>> providedElementFeatures;
-
         // FIELD_INVOICE_NUMBER check
 
         // Creates ML-SDK Document to process
-        document = getDocument("documents/lesson_7_assignment_3.html");
+        Document document = getDocument("documents/lesson_7_assignment_3.html");
 
         // Obtains model configuration for FIELD_INVOICE_NUMBER
-        configurationData = buildConfiguration(Assignment3ModelConfiguration.class,
+        ConfigurationData configurationData = buildConfiguration(Assignment3ModelConfiguration.class,
                 new FieldInfo.Builder(Assignment3ModelConfiguration.FIELD_INVOICE_NUMBER).type(FieldType.INVOICE_TYPE).build());
 
         // Obtains defined annotators list.
-        annotators = getAnnotatorsFromConfiguration(configurationData);
+        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData);
         // Checking provided annotators
         assertThat(annotators.size()).isGreaterThanOrEqualTo(2);
         checkAnnotatorInList(annotators, MatcherTokenAnnotator.class, 0);
         checkAnnotatorInList(annotators, EntityBoundaryAnnotator.class, 1);
 
         // Obtains defined FEs list.
-        fes = getFEsFromConfiguration(configurationData, 1);
+        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
         // Checking provided annotators
         checkFeInList(fes, Assignment3IsCoveredByNerFE.class);
 
@@ -168,7 +159,7 @@ public class Lesson7Test extends BaseLessonTest {
         checkTokenAreProvided(document);
 
         // Process FEs list
-        providedElementFeatures = processFeatures(document, document, fes, true);
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document, document, fes, true);
         // Checks the provided Features with the assignment pattern
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_2_invoice_number_check.json");
 
@@ -244,8 +235,7 @@ public class Lesson7Test extends BaseLessonTest {
         processAnnotators(document, annotators);
         checkTokenAreProvided(document);
 
-        // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, document, fes, false);
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document, document, fes, false);
         // Checks the provided Features with the assignment pattern
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_4_check.json");
     }
