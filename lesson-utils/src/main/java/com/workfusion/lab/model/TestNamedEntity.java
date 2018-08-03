@@ -1,7 +1,5 @@
 package com.workfusion.lab.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
@@ -32,11 +30,10 @@ public class TestNamedEntity extends TestElement {
 
     @Override
     public String toString() {
-        int maxPrintedTextSize = 100;
         return MoreObjects.toStringHelper(NamedEntity.class)
                 .add("begin", begin)
                 .add("end", end)
-                .add("text (first " + maxPrintedTextSize + " symbols)", StringUtils.abbreviate(text, maxPrintedTextSize))
+                .add("text", text)
                 .add("type", type)
                 .toString();
     }

@@ -75,7 +75,7 @@ public class Lesson1Test extends BaseLessonTest {
         List<Sentence> sentences = new ArrayList<>(document.findAll(Sentence.class));
 
         // Checks the provided token with the assignment 1 pattern
-        checkElements(sentences, "lesson_1_assignment_2_check.json");
+        checkElementsNew(sentences, "lesson_1_assignment_2_check.json");
     }
 
 }

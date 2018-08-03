@@ -50,6 +50,7 @@ import com.google.gson.GsonBuilder;
 import com.opencsv.CSVReader;
 import com.workfusion.lab.model.TestElement;
 import com.workfusion.lab.model.TestElementFactory;
+import com.workfusion.lab.model.TestSentence;
 import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.nlp.uima.api.parameter.sweeping.Dimension;
 import com.workfusion.nlp.uima.pipeline.constants.ConfigurationConstants;
@@ -526,6 +527,22 @@ public class BaseLessonTest {
 
         for (Map<String, Object> pattern: patterns) {
             TestElement element= new TestElement();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
+    }
+
+    public void writeSentenceElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestSentence> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestSentence element= new TestSentence();
             element.setText((String)pattern.get("text"));
             element.setBegin((Integer)pattern.get("begin"));
             element.setEnd((Integer)pattern.get("end"));

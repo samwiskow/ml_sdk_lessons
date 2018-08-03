@@ -2,8 +2,6 @@ package com.workfusion.lab.model;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.workfusion.vds.sdk.api.nlp.model.Field;
@@ -54,14 +52,13 @@ public class TestField extends TestElement {
 
     @Override
     public String toString() {
-        int maxPrintedTextSize = 100;
         return MoreObjects.toStringHelper(Field.class)
                 .add("name", name)
                 .add("value", value)
                 .add("score", score)
                 .add("begin", begin)
                 .add("end", end)
-                .add("text (first " + maxPrintedTextSize + " symbols)", StringUtils.abbreviate(text, maxPrintedTextSize))
+                .add("text", text)
                 .toString();
     }
 
