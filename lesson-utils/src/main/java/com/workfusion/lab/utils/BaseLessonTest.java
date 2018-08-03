@@ -383,11 +383,11 @@ public class BaseLessonTest {
         for (int i = 0; i < Math.min(elements.size(), expected.size()); i++) {
             TestElement expectedElement = expected.get(i);
             TestElement actualElement = TestElementFactory.createElement(elements.get(i));
-            log("Element:{}", i);
+            log("Element:{0}", i);
             log("\tExpected element:");
-            log("\t\t"+expectedElement.toString());
+            logger.info("\t\t"+expectedElement.toString());
             log("\tActual element:");
-            log("\t\t"+actualElement.toString());
+            logger.info("\t\t"+actualElement.toString());
 
             assertThat(expectedElement).isEqualTo(actualElement);
 
