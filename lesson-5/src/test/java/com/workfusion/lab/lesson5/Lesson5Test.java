@@ -51,6 +51,8 @@ public class Lesson5Test extends BaseLessonTest {
     @Test
     public void assignment1() throws Exception {
         // Creates ML-SDK Document to process
+        writeSentenceElement("lesson_5_assignment_1_check_sentences.json");
+        writeTestElement("lesson_5_assignment_1_check_token.json");
         IeDocument document = getDocument("documents/lesson_5_assignment_1.txt");
 
         // Obtains model configuration
@@ -66,13 +68,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 1 pattern
-        checkElements(tokens, "lesson_5_assignment_1_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_1_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<Sentence> sentences = new ArrayList<>(document.findAll(Sentence.class));
 
         // Checks the provided sentences with the assignment 1 pattern
-        checkElements(sentences, "lesson_5_assignment_1_check_sentences.json");
+        checkElementsNew(sentences, "lesson_5_assignment_1_check_sentences.json");
     }
 
     /**
@@ -113,13 +115,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 2 pattern
-        checkElements(tokens, "lesson_5_assignment_2_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_2_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<Sentence> sentences = new ArrayList<>(document.findAll(Sentence.class));
 
         // Checks the provided sentences with the assignment 2 pattern
-        checkElements(sentences, "lesson_5_assignment_2_check_sentences.json");
+        checkElementsNew(sentences, "lesson_5_assignment_2_check_sentences.json");
     }
 
     /**
@@ -168,13 +170,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 3 pattern
-        checkElements(tokens, "lesson_5_assignment_3_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_3_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 3 pattern
-        checkElements(ners, "lesson_5_assignment_3_check_ners.json");
+        checkElementsNew(ners, "lesson_5_assignment_3_check_ners.json");
     }
 
     /**
@@ -223,13 +225,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 4 pattern
-        checkElements(tokens, "lesson_5_assignment_4_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_4_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 4 pattern
-        checkElements(ners, "lesson_5_assignment_4_check_ners.json");
+        checkElementsNew(ners, "lesson_5_assignment_4_check_ners.json");
     }
 
     /**
@@ -280,13 +282,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 4 pattern
-        checkElements(tokens, "lesson_5_assignment_5_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_5_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 4 pattern
-        checkElements(ners, "lesson_5_assignment_5_check_ners.json");
+        checkElementsNew(ners, "lesson_5_assignment_5_check_ners.json");
 
 
         // Obtains defined FEs list.
@@ -338,13 +340,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 6 pattern
-        checkElements(tokens, "lesson_5_assignment_6_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_6_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 6 pattern
-        checkElements(ners, "lesson_5_assignment_6_check_ners.json");
+        checkElementsNew(ners, "lesson_5_assignment_6_check_ners.json");
 
         // Obtains defined FEs list.
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
@@ -393,13 +395,13 @@ public class Lesson5Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 7 pattern
-        checkElements(tokens, "lesson_5_assignment_7_check_token.json");
+        checkElementsNew(tokens, "lesson_5_assignment_7_check_token.json");
 
         // Gets all Sentence provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 6 pattern
-        checkElements(ners, "lesson_5_assignment_7_check_ners.json");
+        checkElementsNew(ners, "lesson_5_assignment_7_check_ners.json");
 
         // Obtains defined FEs list.
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
