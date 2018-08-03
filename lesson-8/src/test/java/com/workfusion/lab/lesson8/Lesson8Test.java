@@ -5,8 +5,6 @@ package com.workfusion.lab.lesson8;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -16,13 +14,12 @@ import com.workfusion.lab.lesson8.fe.IsNerPresentFE;
 import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
 import com.workfusion.lab.lesson8.fe.NerAbsolutePositionFE;
 import com.workfusion.lab.lesson8.fe.SimilarityKeysInPrevLineFE;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
-import com.workfusion.vds.sdk.api.nlp.fe.Feature;
-import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
@@ -76,7 +73,7 @@ public class Lesson8Test extends BaseLessonTest {
         checkElements(ners, "lesson_8_assignment_1_check_ners.json");
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new NerAbsolutePositionFE(), new KeywordsPreviousLineFE("total") //Assignment FE to check
         );
 
@@ -129,7 +126,7 @@ public class Lesson8Test extends BaseLessonTest {
         checkElements(ners, "lesson_8_assignment_2_check_ners.json");
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new IsNerPresentFE("state"), new SimilarityKeysInPrevLineFE("address") //Assignment FE to check
         );
 
