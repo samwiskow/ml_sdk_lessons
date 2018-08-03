@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,13 +32,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ListMultimap;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.opencsv.CSVReader;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,6 +41,16 @@ import org.w3c.dom.Node;
 import org.xmlunit.builder.Input;
 import org.xmlunit.xpath.JAXPXPathEngine;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.opencsv.CSVReader;
+import com.workfusion.lab.model.TestElement;
+import com.workfusion.lab.model.TestElementFactory;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.nlp.uima.api.parameter.sweeping.Dimension;
 import com.workfusion.nlp.uima.pipeline.constants.ConfigurationConstants;
 import com.workfusion.nlp.uima.pipeline.constants.PipelineConstants;
@@ -91,18 +93,43 @@ public class BaseLessonTest {
     protected static final Log logger = LogFactory.getLog("TRAINING");
 
     /**
+     * Input directory path to use.
+     */
+    public final static String TEST_INPUT_DIR_PATH = "data/test/";
+
+    /**
+     * Output directory path to use.
+     */
+    public final static String EXTRACT_OUTPUT_DIR_PATH = "results/extract/";
+
+    /**
+     * Input directory path to use.
+     */
+    public final static String TRAIN_INPUT_DIR_PATH = "data/train/";
+
+    /**
+     * Output directory path to use.
+     */
+    public final static String TRAINING_OUTPUT_DIR_PATH = "results/training/";
+
+    /**
+     * Model directory path to use.
+     */
+    public final static String MODEL_DIR_PATH = TRAINING_OUTPUT_DIR_PATH + "output/model/";
+
+    /**
      * Helper method: creates default configuration context.
      *
      * @return
      */
-    protected static DefaultConfigurationContext getConfigurationContext() {
+    protected DefaultConfigurationContext getConfigurationContext() {
         return new DefaultConfigurationContext(getTestFieldInfo(), new HashMap<>());
     }
 
     /**
      * Helper method: creates a default FieldInfo.
      */
-    protected static FieldInfo getTestFieldInfo() {
+    protected FieldInfo getTestFieldInfo() {
         return new FieldInfo.Builder("test")
                 .type(FieldType.FREE_TEXT)
                 .build();
@@ -138,6 +165,15 @@ public class BaseLessonTest {
      * Helper method: returns annotators from dimension.
      */
     protected List<Annotator> getAnnotatorsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData);
+        assertThat(annotators.size()).isEqualTo(expectedSize);
+        return annotators;
+    }
+
+    /**
+     * Helper method: returns annotators from dimension.
+     */
+    protected List<Annotator> getAnnotatorsFromConfiguration(ConfigurationData configurationData) {
         ListMultimap<String, Dimension> dimensions = configurationData.getParameterSpace().getDimensions();
         // Obtains defined annotators list.
         List<Annotator> annotators = null;
@@ -148,17 +184,22 @@ public class BaseLessonTest {
         }
         log("Checking that annotators are defined in @Named methods.");
         assertThat(annotators).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(annotators.size()).isEqualTo(expectedSize);
-        }
         return annotators;
     }
-
 
     /**
      * Helper method: returns FEs from dimension.
      */
     protected List<FeatureExtractor> getFEsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData);
+        assertThat(fes.size()).isEqualTo(expectedSize);
+        return fes;
+    }
+
+    /**
+     * Helper method: returns FEs from dimension.
+     */
+    protected List<FeatureExtractor> getFEsFromConfiguration(ConfigurationData configurationData) {
         ListMultimap<String, Dimension> dimensions = configurationData.getParameterSpace().getDimensions();
         // Obtains defined annotators list.
         List<FeatureExtractor> fes = null;
@@ -169,28 +210,33 @@ public class BaseLessonTest {
         }
         log("Checking that FEs are defined in @Named methods.");
         assertThat(fes).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(fes.size()).isEqualTo(expectedSize);
-        }
         return fes;
     }
 
     /**
-     * Helper method: returns annotators from dimension.
+     * Helper method: returns processors from dimension.
      */
     protected List<Processor> getProcessorsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<Processor> processors = getProcessorsFromConfiguration(configurationData);
+        if (expectedSize > -1) {
+            assertThat(processors.size()).isEqualTo(expectedSize);
+        }
+        return processors;
+    }
+
+    /**
+     * Helper method: returns processors from dimension.
+     */
+    protected List<Processor> getProcessorsFromConfiguration(ConfigurationData configurationData) {
         // Obtains defined annotators list.
         List<Processor> processors = null;
         try {
-            processors = (List<Processor>) configurationData.getPostProcessors();
+            processors = configurationData.getPostProcessors();
         } catch (Exception e) {
             log("There is no @Named returns List<Processor<IeDocument>> in the ModelConfiguration class.");
         }
         log("Checking that post-processors are defined in @Named methods.");
         assertThat(processors).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(processors.size()).isEqualTo(expectedSize);
-        }
         return processors;
     }
 
@@ -327,6 +373,35 @@ public class BaseLessonTest {
      * @param elements    the element list
      * @param patternFile the pattern JSON file to load and check
      */
+    protected void checkElementsNew(List<? extends Element> elements, String patternFile) throws IOException {
+        log("Checking provided document elements ...");
+
+        // Loads token check patterns
+        List<TestElement> expected = (List<TestElement>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        for (int i = 0; i < Math.min(elements.size(), expected.size()); i++) {
+            TestElement expectedElement = expected.get(i);
+            TestElement actualElement = TestElementFactory.createElement(elements.get(i));
+            log("Element:{}", i);
+            log("\tExpected element:");
+            log("\t\t"+expectedElement.toString());
+            log("\tActual element:");
+            log("\t\t"+actualElement.toString());
+
+            assertThat(expectedElement).isEqualTo(actualElement);
+
+         }
+        log("Checking number of provided elements size: {0} <-- {1}", elements.size(), expected.size());
+        assertThat(elements.size()).isEqualTo(expected.size());
+    }
+
+    /**
+     * Helper method: Checks the provided elements with the pattern
+     *
+     * @param elements    the element list
+     * @param patternFile the pattern JSON file to load and check
+     */
     protected void checkElements(List<? extends Element> elements, String patternFile) throws IOException {
         log("Checking provided document elements ...");
 
@@ -354,54 +429,6 @@ public class BaseLessonTest {
         }
         log("Checking number of provided elements size: {0} <-- {1}", elements.size(), patterns.size());
         assertThat(elements.size()).isEqualTo(patterns.size());
-    }
-
-    /**
-     * Helper method: Checks the provided element features with the pattern
-     *
-     * @param providedElementFeatures the element->feature set
-     * @param patternFile             the pattern JSON file to load and check
-     */
-    protected void checkElementFeatures(Map<Element, Set<Feature>> providedElementFeatures, String patternFile) throws IOException {
-        log("Checking provided element features ...");
-
-        // Loads FE check patterns
-        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
-                .getResourceAsStream(patternFile));
-
-        List<Map.Entry<Element, Set<Feature>>> providedEntries = providedElementFeatures.entrySet().stream().collect(Collectors.toList());
-
-        for (int i = 0; i < Math.min(providedEntries.size(), patterns.size()); i++) {
-            Element element = providedEntries.get(i).getKey();
-            List<Feature> elementFeatures = providedEntries.get(i).getValue().stream().collect(Collectors.toList());
-
-            Map<String, Object> pattern = patterns.get(i);
-            List<Feature> patternFeatures = ((Set<Feature>) pattern.get("features")).stream().collect(Collectors.toList());
-
-            if (!(elementFeatures.size() == patternFeatures.size() && patternFeatures.size() == 0)) {
-                log("\t{0}:{1}, \"{2}\", {3}-{4}",
-                        element.getClass().getSimpleName().substring(4),
-                        i,
-                        element.getText(),
-                        element.getBegin(),
-                        element.getEnd());
-                log("\t\tChecking the number of provided features.");
-                assertThat(elementFeatures.size()).isEqualTo(patternFeatures.size());
-
-                for (int j = 0; j < Math.min(patternFeatures.size(), elementFeatures.size()); j++) {
-
-                    log("\t\tfeature:{0}, name: \"{1}\" <-- \"{2}\"",
-                            j,
-                            elementFeatures.get(j).getName(),
-                            patternFeatures.get(j).getName());
-                    assertThat(elementFeatures.get(j).getName()).isEqualTo(patternFeatures.get(j).getName());
-                }
-            }
-
-        }
-        log("\tChecking number of checked tokens: {0} <-- {1}", providedEntries.size(), patterns.size());
-        assertThat(providedEntries.size()).isEqualTo(patterns.size());
-
     }
 
     /**
@@ -442,6 +469,87 @@ public class BaseLessonTest {
         }
         log("Checking number of provided fields size: {0} <-- {1}", fields.size(), patterns.size());
         assertThat(fields.size()).isEqualTo(patterns.size());
+    }
+
+    /**
+     * Helper method: Checks the provided element features with the pattern
+     *
+     * @param providedElementFeatures the element->feature set
+     * @param patternFile             the pattern JSON file to load and check
+     */
+    protected void checkElementFeatures(List<ElementDTO> actualFeatures, String patternFile) throws IOException {
+        log("Checking provided element features ...");
+
+        // Loads FE expected features
+        List<ElementDTO> expectedFeatures = (List<ElementDTO>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        log("\tChecking number of tokens: {0} <-- {1}", actualFeatures.size(), expectedFeatures.size());
+        assertThat(actualFeatures.size()).isEqualTo(expectedFeatures.size());
+
+        for (int i = 0; i < expectedFeatures.size(); i++) {
+            ElementDTO expectedElementFeature = expectedFeatures.get(i);
+            ElementDTO actualElementFeature = actualFeatures.get(i);
+
+            if (expectedElementFeature.getFeatures().size() != actualElementFeature.getFeatures().size() || expectedElementFeature.getFeatures().size() != 0) {
+                log("\tToken:{0}, \"{1}\", {2}-{3}",
+                        i,
+                        actualElementFeature.getText(),
+                        actualElementFeature.getBegin(),
+                        actualElementFeature.getEnd());
+                log("\t\tChecking token features.");
+                log("\t\tExpected features:");
+                expectedElementFeature.getFeatures().forEach(f->{
+                    log("\t\t\tFeature name: \"{0}\", value: \"{1}\"",
+                            f.getName(),
+                            f.getValue());
+                });
+                log("\t\tActual features:");
+                actualElementFeature.getFeatures().forEach(f->{
+                    log("\t\t\tFeature name: \"{0}\", value: \"{1}\"",
+                            f.getName(),
+                            f.getValue());
+                });
+
+                assertThat(expectedElementFeature.getFeatures()).containsExactlyElementsOf(actualElementFeature.getFeatures());
+            }
+
+        }
+    }
+
+
+    public void writeTestElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestElement> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestElement element= new TestElement();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
+    }
+
+    public void writeTestElementFE(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestTokenFeatures> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestElement element= new TestElement();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            TestTokenFeatures features = new TestTokenFeatures();
+            features.setFeatures((Set<Feature>)pattern.get("features"));
+            result.add(features);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
     }
 
     /**
@@ -519,7 +627,7 @@ public class BaseLessonTest {
     /**
      * Helper method: process FE list for the document
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document document,
+    protected List<ElementDTO> processFeatures(Document document,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, Arrays.asList(fes));
     }
@@ -527,7 +635,7 @@ public class BaseLessonTest {
     /**
      * Helper method: process FE list for the document
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document document,
+    protected List<ElementDTO> processFeatures(Document document,
             List<FeatureExtractor> fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, document, fes, false);
     }
@@ -650,7 +758,7 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document onStartDocument,
+    protected List<ElementDTO> processFeatures(Document onStartDocument,
             Document processDocument,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(onStartDocument, processDocument, Arrays.asList(fes), false);
@@ -664,20 +772,19 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document onStartDocument,
+    protected List<ElementDTO> processFeatures(Document onStartDocument,
             Document processDocument,
             List<FeatureExtractor> fes,
             boolean restrictTokenAccess) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         log("Feature extractors initialization ...");
-        Class focusElementClass = UimaElementFactory.getInstance().findElementType(org.cleartk.token.type.Token.class);
         DefaultCacheBuilder indexBuilder = new DefaultCacheBuilder();
         for (FeatureExtractor fe : fes) {
             log("\t{0}::Init", fe.getClass().getName());
-            LifecycleEventExecutor.getInstance().executeInit(fe, Collections.emptyMap(), indexBuilder, focusElementClass);
+            LifecycleEventExecutor.getInstance().executeInit(fe, Collections.emptyMap(), indexBuilder, Token.class);
 
             log("\t{0}::OnDocumentStart", fe.getClass().getName());
-            LifecycleEventExecutor.getInstance().executeOnDocumentStart(fe, onStartDocument, focusElementClass);
+            LifecycleEventExecutor.getInstance().executeOnDocumentStart(fe, onStartDocument, Token.class);
         }
 
         log("Applying feature extractor to Tokens.");
@@ -685,7 +792,7 @@ public class BaseLessonTest {
         List<Token> tokens = onStartDocument.findAll(Token.class).stream().collect(Collectors.toList());
 
         // Gives all features provided by custom FEs
-        Map<Element, Set<Feature>> providedElementFeatures = new LinkedHashMap<>();
+        List<ElementDTO> resultFeatures = new ArrayList<>();
         // Restrict access to Token TEXT
         List<String> tokenText = new ArrayList<>();
         if (restrictTokenAccess) {
@@ -702,8 +809,12 @@ public class BaseLessonTest {
                     FieldUtils.writeField(token, "text", "NO ACCESS", true);
                 }
                 Collection<Feature> features = fe.extract(processDocument, token);
-                Collection<Feature> tokenFeatures = providedElementFeatures.computeIfAbsent(token, k -> new HashSet());
-                tokenFeatures.addAll(features);
+                ElementDTO elementFeatures = new ElementDTO();
+                elementFeatures.setBegin(token.getBegin())
+                               .setEnd(token.getEnd())
+                               .setText(token.getText())
+                               .setFeatures(new HashSet<>(features));
+                resultFeatures.add(elementFeatures);
             }
         }
         // Return text back for Token's
@@ -723,7 +834,7 @@ public class BaseLessonTest {
             LifecycleEventExecutor.getInstance().executeDestroy(fe, Collections.emptyMap());
         }
 
-        return providedElementFeatures;
+        return resultFeatures;
     }
 
 
@@ -810,55 +921,6 @@ public class BaseLessonTest {
     }
 
     /**
-     * Security manager class implementation to prevent System.exit()
-     */
-    private static class PreventSystemExitSecurityManager extends SecurityManager {
-
-        private final SecurityManager _prevMgr;
-
-        public PreventSystemExitSecurityManager(final SecurityManager parent) {
-            this._prevMgr = parent;
-        }
-
-        public PreventSystemExitSecurityManager() {
-            this(System.getSecurityManager());
-        }
-
-
-        @Override
-        public void checkPermission(final Permission perm) {
-        }
-
-        @Override
-        public void checkPermission(Permission perm, Object context) {
-        }
-
-        @Override
-        public void checkExit(final int code) {
-            throw new PreventSystemExitException();
-        }
-
-        public SecurityManager getPreviousMgr() { return _prevMgr; }
-
-        public static class PreventSystemExitException extends RuntimeException {
-        }
-
-        public static void disableSystemExit(boolean disabled) {
-            if (disabled) {
-                System.setSecurityManager(new PreventSystemExitSecurityManager());
-            } else {
-                SecurityManager mgr = System.getSecurityManager();
-                if ((mgr != null) && (mgr instanceof PreventSystemExitSecurityManager)) {
-                    PreventSystemExitSecurityManager smgr = (PreventSystemExitSecurityManager) mgr;
-                    System.setSecurityManager(smgr.getPreviousMgr());
-                } else {
-                    System.setSecurityManager(null);
-                }
-            }
-        }
-    }
-
-    /**
      * Execute a runner class.
      */
     protected void executeRunner(Class<?> runnerClass) throws Exception {
@@ -873,43 +935,6 @@ public class BaseLessonTest {
             // Do nothing
         } finally {
             PreventSystemExitSecurityManager.disableSystemExit(false);
-        }
-    }
-
-    /**
-     * Input directory path to use.
-     */
-    public final static String TEST_INPUT_DIR_PATH = "data/test/";
-    /**
-     * Output directory path to use.
-     */
-    public final static String EXTRACT_OUTPUT_DIR_PATH = "results/extract/";
-
-    /**
-     * Input directory path to use.
-     */
-    public final static String TRAIN_INPUT_DIR_PATH = "data/train/";
-    /**
-     * Output directory path to use.
-     */
-    public final static String TRAINING_OUTPUT_DIR_PATH = "results/training/";
-
-    /**
-     * Model directory path to use.
-     */
-    public final static String MODEL_DIR_PATH = TRAINING_OUTPUT_DIR_PATH + "output/model/";
-
-    /**
-     * Field statistics wrapper
-     */
-    public static class FieldStatistic {
-
-        double precision;
-        double recall;
-
-        public FieldStatistic(double precision, double recall) {
-            this.precision = precision;
-            this.recall = recall;
         }
     }
 
@@ -1034,17 +1059,6 @@ public class BaseLessonTest {
         return null;
     }
 
-    private static class FieldsExclusionStrategy implements ExclusionStrategy {
-
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-
-        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-            return fieldAttributes.getDeclaredClass().isInterface();
-        }
-    }
-
     private Map<String, Object> loadConfigurationFromFile(File configurationFile) {
         try (InputStream stream = new BufferedInputStream(new FileInputStream(configurationFile))) {
             return (Map<String, Object>) JsonSerializationUtil.readObject(stream);
@@ -1095,6 +1109,82 @@ public class BaseLessonTest {
         log("Checking the HPO constants");
         assertThat(hpoConfiguration.getTimeLimit()).isEqualTo(600);
         assertThat(hpoConfiguration.getMaxExpWithSameBestScore()).isEqualTo(5);
+    }
+
+    /**
+     * Security manager class implementation to prevent System.exit()
+     */
+    private static class PreventSystemExitSecurityManager extends SecurityManager {
+
+        private final SecurityManager _prevMgr;
+
+        public PreventSystemExitSecurityManager(final SecurityManager parent) {
+            this._prevMgr = parent;
+        }
+
+        public PreventSystemExitSecurityManager() {
+            this(System.getSecurityManager());
+        }
+
+
+        @Override
+        public void checkPermission(final Permission perm) {
+        }
+
+        @Override
+        public void checkPermission(Permission perm, Object context) {
+        }
+
+        @Override
+        public void checkExit(final int code) {
+            throw new PreventSystemExitException();
+        }
+
+        public SecurityManager getPreviousMgr() { return _prevMgr; }
+
+        public static class PreventSystemExitException extends RuntimeException {
+        }
+
+        public static void disableSystemExit(boolean disabled) {
+            if (disabled) {
+                System.setSecurityManager(new PreventSystemExitSecurityManager());
+            } else {
+                SecurityManager mgr = System.getSecurityManager();
+                if ((mgr != null) && (mgr instanceof PreventSystemExitSecurityManager)) {
+                    PreventSystemExitSecurityManager smgr = (PreventSystemExitSecurityManager) mgr;
+                    System.setSecurityManager(smgr.getPreviousMgr());
+                } else {
+                    System.setSecurityManager(null);
+                }
+            }
+        }
+    }
+
+    /**
+     * Field statistics wrapper
+     */
+    public static class FieldStatistic {
+
+        double precision;
+        double recall;
+
+        public FieldStatistic(double precision, double recall) {
+            this.precision = precision;
+            this.recall = recall;
+        }
+    }
+
+    private static class FieldsExclusionStrategy implements ExclusionStrategy {
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return false;
+        }
+
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getDeclaredClass().isInterface();
+        }
     }
 
 }

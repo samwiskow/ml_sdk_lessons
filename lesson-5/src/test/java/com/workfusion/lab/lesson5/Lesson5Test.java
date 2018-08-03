@@ -5,8 +5,6 @@ package com.workfusion.lab.lesson5;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
@@ -17,11 +15,10 @@ import com.workfusion.lab.lesson5.config.Assignment3ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment4ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment5ModelConfiguration;
 import com.workfusion.lab.utils.BaseLessonTest;
+import com.workfusion.lab.utils.ElementDTO;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
-import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
-import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.EntityBoundary;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
@@ -296,7 +293,7 @@ public class Lesson5Test extends BaseLessonTest {
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
 
         // Gives all features provided by custom FEs
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, fes);
+        List<ElementDTO> providedElementFeatures = processFeatures(document, fes);
         checkElementFeatures(providedElementFeatures, "lesson_5_assignment_5_check_fe.json");
     }
 
@@ -353,7 +350,7 @@ public class Lesson5Test extends BaseLessonTest {
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
 
         // Gives all features provided by custom FEs
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, fes);
+        List<ElementDTO> providedElementFeatures = processFeatures(document, fes);
         checkElementFeatures(providedElementFeatures, "lesson_5_assignment_6_check_fe.json");
     }
 
@@ -408,7 +405,7 @@ public class Lesson5Test extends BaseLessonTest {
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
 
         // Gives all features provided by custom FEs
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, fes);
+        List<ElementDTO> providedElementFeatures = processFeatures(document, fes);
         checkElementFeatures(providedElementFeatures, "lesson_5_assignment_7_check_fe.json");
 
     }

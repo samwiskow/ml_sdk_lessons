@@ -96,7 +96,7 @@ public class Lesson7Test extends BaseLessonTest {
                 new FieldInfo.Builder(Assignment2ModelConfiguration.FIELD_INVOICE_NUMBER).type(FieldType.INVOICE_TYPE).build());
 
         // Obtains defined annotators list.
-        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData, -1);
+        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData);
         // Checking provided annotators
         assertThat(annotators.size()).isGreaterThanOrEqualTo(2);
         checkAnnotatorInList(annotators, MatcherTokenAnnotator.class, 0);
@@ -152,7 +152,7 @@ public class Lesson7Test extends BaseLessonTest {
                 new FieldInfo.Builder(Assignment3ModelConfiguration.FIELD_INVOICE_NUMBER).type(FieldType.INVOICE_TYPE).build());
 
         // Obtains defined annotators list.
-        annotators = getAnnotatorsFromConfiguration(configurationData, -1);
+        annotators = getAnnotatorsFromConfiguration(configurationData);
         // Checking provided annotators
         assertThat(annotators.size()).isGreaterThanOrEqualTo(2);
         checkAnnotatorInList(annotators, MatcherTokenAnnotator.class, 0);
@@ -228,14 +228,14 @@ public class Lesson7Test extends BaseLessonTest {
                 new FieldInfo.Builder(Assignment4ModelConfiguration.FIELD_PRICE).type(FieldType.PRICE).build());
 
         // Obtains defined annotators list.
-        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData, -1);
+        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData);
         // Checking provided annotators
         assertThat(annotators.size()).isGreaterThanOrEqualTo(2);
         checkAnnotatorInList(annotators, MatcherTokenAnnotator.class, 0);
         checkAnnotatorInList(annotators, EntityBoundaryAnnotator.class, 1);
 
         // Obtains defined FEs list.
-        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, -1);
+        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData);
 
         // Checking provided annotators
         checkFeInList(fes, Assignment4NextTokenIsNumberFE.class, Assignment4ColumnIndexFE.class);

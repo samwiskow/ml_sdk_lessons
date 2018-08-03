@@ -3,8 +3,7 @@
  */
 package com.workfusion.lab.lesson3;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -14,6 +13,7 @@ import com.workfusion.lab.lesson3.fe.Assignment3TableFE;
 import com.workfusion.lab.lesson3.fe.Assignment4FirstInSentenceFE;
 import com.workfusion.lab.lesson3.fe.Assignment5FirstInSentenceFE;
 import com.workfusion.lab.utils.BaseLessonTest;
+import com.workfusion.lab.utils.ElementDTO;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentComplete;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentStart;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
@@ -60,7 +60,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<ElementDTO> providedElementFeatures = processFeatures(document,
                 new Assignment1KeywordFE() //Assignment FE to check
         );
 
@@ -98,7 +98,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<ElementDTO> providedElementFeatures = processFeatures(document,
                 new Assignment2NerFE() //Assignment FE to check
         );
 
@@ -133,12 +133,13 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<ElementDTO> providedElementFeatures = processFeatures(document,
                 new Assignment3TableFE() //Assignment FE to check
         );
 
         // Checks the provided Features with the assignment 2 pattern
         checkElementFeatures(providedElementFeatures, "lesson_3_assignment_3_check.json");
+
     }
 
 
@@ -167,7 +168,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<ElementDTO> providedElementFeatures = processFeatures(document,
                 new Assignment4FirstInSentenceFE() //Assignment FE to check
         );
 
@@ -205,7 +206,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document, getNotAccessibleDocument(),
+        List<ElementDTO> providedElementFeatures = processFeatures(document, getNotAccessibleDocument(),
                 new Assignment5FirstInSentenceFE()
         );
 
