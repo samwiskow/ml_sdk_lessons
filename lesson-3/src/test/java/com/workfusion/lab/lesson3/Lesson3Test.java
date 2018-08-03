@@ -12,8 +12,8 @@ import com.workfusion.lab.lesson3.fe.Assignment2NerFE;
 import com.workfusion.lab.lesson3.fe.Assignment3TableFE;
 import com.workfusion.lab.lesson3.fe.Assignment4FirstInSentenceFE;
 import com.workfusion.lab.lesson3.fe.Assignment5FirstInSentenceFE;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.lab.utils.BaseLessonTest;
-import com.workfusion.lab.utils.ElementDTO;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentComplete;
 import com.workfusion.vds.sdk.api.nlp.annotation.OnDocumentStart;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
@@ -60,7 +60,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs
-        List<ElementDTO> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new Assignment1KeywordFE() //Assignment FE to check
         );
 
@@ -98,7 +98,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        List<ElementDTO> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new Assignment2NerFE() //Assignment FE to check
         );
 
@@ -133,7 +133,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        List<ElementDTO> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new Assignment3TableFE() //Assignment FE to check
         );
 
@@ -168,7 +168,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs
-        List<ElementDTO> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new Assignment4FirstInSentenceFE() //Assignment FE to check
         );
 
@@ -206,7 +206,7 @@ public class Lesson3Test extends BaseLessonTest {
         );
 
         // Process FEs list
-        List<ElementDTO> providedElementFeatures = processFeatures(document, getNotAccessibleDocument(),
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document, getNotAccessibleDocument(),
                 new Assignment5FirstInSentenceFE()
         );
 

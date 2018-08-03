@@ -478,26 +478,22 @@ public class BaseLessonTest {
      * @param providedElementFeatures the element->feature set
      * @param patternFile             the pattern JSON file to load and check
      */
-    protected void checkElementFeatures(List<ElementDTO> actualFeatures, String patternFile) throws IOException {
+    protected void checkElementFeatures(List<TestTokenFeatures> actualFeatures, String patternFile) throws IOException {
         log("Checking provided element features ...");
 
         // Loads FE expected features
-        List<ElementDTO> expectedFeatures = (List<ElementDTO>) JsonSerializationUtil.readObject(this.getClass()
+        List<TestTokenFeatures> expectedFeatures = (List<TestTokenFeatures>) JsonSerializationUtil.readObject(this.getClass()
                 .getResourceAsStream(patternFile));
 
         log("\tChecking number of tokens: {0} <-- {1}", actualFeatures.size(), expectedFeatures.size());
         assertThat(actualFeatures.size()).isEqualTo(expectedFeatures.size());
 
         for (int i = 0; i < expectedFeatures.size(); i++) {
-            ElementDTO expectedElementFeature = expectedFeatures.get(i);
-            ElementDTO actualElementFeature = actualFeatures.get(i);
+            TestTokenFeatures expectedElementFeature = expectedFeatures.get(i);
+            TestTokenFeatures actualElementFeature = actualFeatures.get(i);
 
             if (expectedElementFeature.getFeatures().size() != actualElementFeature.getFeatures().size() || expectedElementFeature.getFeatures().size() != 0) {
-                log("\tToken:{0}, \"{1}\", {2}-{3}",
-                        i,
-                        actualElementFeature.getText(),
-                        actualElementFeature.getBegin(),
-                        actualElementFeature.getEnd());
+                logger.info("\t"+actualElementFeature.getElement().toString());
                 log("\t\tChecking token features.");
                 log("\t\tExpected features:");
                 expectedElementFeature.getFeatures().forEach(f->{
@@ -644,7 +640,7 @@ public class BaseLessonTest {
     /**
      * Helper method: process FE list for the document
      */
-    protected List<ElementDTO> processFeatures(Document document,
+    protected List<TestTokenFeatures> processFeatures(Document document,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, Arrays.asList(fes));
     }
@@ -652,7 +648,7 @@ public class BaseLessonTest {
     /**
      * Helper method: process FE list for the document
      */
-    protected List<ElementDTO> processFeatures(Document document,
+    protected List<TestTokenFeatures> processFeatures(Document document,
             List<FeatureExtractor> fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, document, fes, false);
     }
@@ -775,7 +771,7 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected List<ElementDTO> processFeatures(Document onStartDocument,
+    protected List<TestTokenFeatures> processFeatures(Document onStartDocument,
             Document processDocument,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(onStartDocument, processDocument, Arrays.asList(fes), false);
@@ -789,7 +785,7 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected List<ElementDTO> processFeatures(Document onStartDocument,
+    protected List<TestTokenFeatures> processFeatures(Document onStartDocument,
             Document processDocument,
             List<FeatureExtractor> fes,
             boolean restrictTokenAccess) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
@@ -809,7 +805,7 @@ public class BaseLessonTest {
         List<Token> tokens = onStartDocument.findAll(Token.class).stream().collect(Collectors.toList());
 
         // Gives all features provided by custom FEs
-        List<ElementDTO> resultFeatures = new ArrayList<>();
+        List<TestTokenFeatures> resultFeatures = new ArrayList<>();
         // Restrict access to Token TEXT
         List<String> tokenText = new ArrayList<>();
         if (restrictTokenAccess) {
@@ -826,12 +822,11 @@ public class BaseLessonTest {
                     FieldUtils.writeField(token, "text", "NO ACCESS", true);
                 }
                 Collection<Feature> features = fe.extract(processDocument, token);
-                ElementDTO elementFeatures = new ElementDTO();
-                elementFeatures.setBegin(token.getBegin())
-                               .setEnd(token.getEnd())
-                               .setText(token.getText())
-                               .setFeatures(new HashSet<>(features));
-                resultFeatures.add(elementFeatures);
+                TestElement testElement = TestElementFactory.createElement(token);
+                TestTokenFeatures testTokenFeatures = new TestTokenFeatures();
+                testTokenFeatures.setElement(testElement);
+                testTokenFeatures.setFeatures(new HashSet<>(features));
+                resultFeatures.add(testTokenFeatures);
             }
         }
         // Return text back for Token's

@@ -1,13 +1,11 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.lesson5.config;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
-import com.workfusion.vds.sdk.api.hypermodel.annotation.Import;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
-import com.workfusion.vds.sdk.api.hypermodel.annotation.Named;
-import com.workfusion.vds.sdk.api.nlp.configuration.IeConfigurationContext;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
@@ -20,17 +18,11 @@ import static java.util.Collections.singletonList;
  * Assignment 7
  */
 @ModelConfiguration
-@Import(configurations = {
-        @Import.Configuration(Assignment5ModelConfiguration.class)
-})
+// TODO:  PUT YOU CODE HERE
 public class Assignment7ModelConfiguration {
 
-    @Named("featureExtractorsAdded")
-    public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
-        return Arrays.asList(
-                new IsNumberIncludedFE<>()
-        );
-    }
+    // TODO:  PUT YOU CODE HERE
+
 }
 
 /**
@@ -52,6 +44,9 @@ class IsNumberIncludedFE<T extends Element> implements FeatureExtractor<T> {
      */
     public static final String FEATURE_NAME = "isNumberPresent";
 
+    /**
+     * Regex pattern to match a number.
+     */
     public static final String NUMBER_REGEX = ".*\\d.*";
 
     @Override
@@ -60,4 +55,5 @@ class IsNumberIncludedFE<T extends Element> implements FeatureExtractor<T> {
         double value = text.matches(NUMBER_REGEX) ? 1.0 : 0.0;
         return singletonList(new Feature(FEATURE_NAME, value));
     }
+
 }
