@@ -374,7 +374,7 @@ public class BaseLessonTest {
      * @param elements    the element list
      * @param patternFile the pattern JSON file to load and check
      */
-    protected void checkElementsNew(List<? extends Element> elements, String patternFile) throws IOException {
+    protected void checkElements(List<? extends Element> elements, String patternFile) throws IOException {
         log("Checking provided document elements ...");
 
         // Loads token check patterns
@@ -398,81 +398,6 @@ public class BaseLessonTest {
     }
 
     /**
-     * Helper method: Checks the provided elements with the pattern
-     *
-     * @param elements    the element list
-     * @param patternFile the pattern JSON file to load and check
-     */
-    protected void checkElements(List<? extends Element> elements, String patternFile) throws IOException {
-        log("Checking provided document elements ...");
-
-        // Loads token check patterns
-        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
-                .getResourceAsStream(patternFile));
-
-        for (int i = 0; i < Math.min(elements.size(), patterns.size()); i++) {
-            log("{0}:{1}", elements.get(i).getClass().getSimpleName().substring(4), i);
-            Map<String, Object> pattern = patterns.get(i);
-
-            log("\ttext: \"{0}\" <-- \"{1}\"", elements.get(i).getText(), pattern.get("text"));
-            assertThat(elements.get(i).getText()).isEqualTo(pattern.get("text"));
-
-            log("\tbegin: {0} <-- {1}", elements.get(i).getBegin(), pattern.get("begin"));
-            assertThat(elements.get(i).getBegin()).isEqualTo(pattern.get("begin"));
-
-            log("\tend: {0} <-- {1}", elements.get(i).getEnd(), pattern.get("end"));
-            assertThat(elements.get(i).getEnd()).isEqualTo(pattern.get("end"));
-
-            if (elements.get(i) instanceof NamedEntity) {
-                log("\ttype: \"{0}\" <-- \"{1}\"", ((NamedEntity) elements.get(i)).getType(), pattern.get("type"));
-                assertThat(((NamedEntity) elements.get(i)).getType()).isEqualTo(pattern.get("type"));
-            }
-        }
-        log("Checking number of provided elements size: {0} <-- {1}", elements.size(), patterns.size());
-        assertThat(elements.size()).isEqualTo(patterns.size());
-    }
-
-    /**
-     * Helper method: Checks the provided fields with the pattern
-     *
-     * @param fields      the element list
-     * @param patternFile the pattern JSON file to load and check
-     */
-    protected void checkFields(List<? extends Field> fields, String patternFile) throws IOException {
-        log("Checking provided document fields ...");
-
-        // Loads processor check patterns
-        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
-                .getResourceAsStream(patternFile));
-
-        for (int i = 0; i < Math.min(fields.size(), patterns.size()); i++) {
-            log("{0}:{1}", fields.get(i).getClass().getSimpleName().substring(4), i);
-            Map<String, Object> pattern = patterns.get(i);
-
-            log("\tname: \"{0}\" <-- \"{1}\"", fields.get(i).getName(), pattern.get("name"));
-            assertThat(fields.get(i).getName()).isEqualTo(pattern.get("name"));
-
-            log("\ttext: \"{0}\" <-- \"{1}\"", fields.get(i).getText(), pattern.get("text"));
-            assertThat(fields.get(i).getText()).isEqualTo(pattern.get("text"));
-
-            log("\tvalue: \"{0}\" <-- \"{1}\"", fields.get(i).getValue(), pattern.get("value"));
-            assertThat(fields.get(i).getValue()).isEqualTo(pattern.get("value"));
-
-            log("\tbegin: {0} <-- {1}", fields.get(i).getBegin(), pattern.get("begin"));
-            assertThat(fields.get(i).getBegin()).isEqualTo(pattern.get("begin"));
-
-            log("\tend: {0} <-- {1}", fields.get(i).getEnd(), pattern.get("end"));
-            assertThat(fields.get(i).getEnd()).isEqualTo(pattern.get("end"));
-
-            log("\tscore: {0} <-- {1}", fields.get(i).getScore(), pattern.get("score"));
-            assertThat(fields.get(i).getScore()).isEqualTo(pattern.get("score"));
-
-        }
-        log("Checking number of provided fields size: {0} <-- {1}", fields.size(), patterns.size());
-        assertThat(fields.size()).isEqualTo(patterns.size());
-    }
-
-    /**
      * Helper method: Checks the provided element features with the pattern
      *
      * @param providedElementFeatures the element->feature set
@@ -484,7 +409,6 @@ public class BaseLessonTest {
         // Loads FE expected features
         List<TestTokenFeatures> expectedFeatures = (List<TestTokenFeatures>) JsonSerializationUtil.readObject(this.getClass()
                 .getResourceAsStream(patternFile));
-
         log("\tChecking number of tokens: {0} <-- {1}", actualFeatures.size(), expectedFeatures.size());
         assertThat(actualFeatures.size()).isEqualTo(expectedFeatures.size());
 
@@ -559,6 +483,7 @@ public class BaseLessonTest {
             element.setBegin((Integer)pattern.get("begin"));
             element.setEnd((Integer)pattern.get("end"));
             TestTokenFeatures features = new TestTokenFeatures();
+            features.setElement(element);
             features.setFeatures((Set<Feature>)pattern.get("features"));
             result.add(features);
         }
@@ -814,20 +739,20 @@ public class BaseLessonTest {
                 FieldUtils.writeField(token, "text", "NO ACCESS", true);
             }
         }
-        for (FeatureExtractor fe : fes) {
-            log("\t{0}::extract", fe.getClass().getName());
-            for (Token token : tokens) {
-                if (restrictTokenAccess) {
-                    tokenText.add(token.getText());
-                    FieldUtils.writeField(token, "text", "NO ACCESS", true);
-                }
-                Collection<Feature> features = fe.extract(processDocument, token);
-                TestElement testElement = TestElementFactory.createElement(token);
-                TestTokenFeatures testTokenFeatures = new TestTokenFeatures();
-                testTokenFeatures.setElement(testElement);
-                testTokenFeatures.setFeatures(new HashSet<>(features));
-                resultFeatures.add(testTokenFeatures);
+        log("\tExtract features");
+        for (Token token : tokens) {
+            if (restrictTokenAccess) {
+                tokenText.add(token.getText());
+                FieldUtils.writeField(token, "text", "NO ACCESS", true);
             }
+            Set<Feature> tokenFeatures = new HashSet<>();
+            for (FeatureExtractor fe : fes) {
+                tokenFeatures.addAll(fe.extract(processDocument, token));
+            }
+            TestTokenFeatures testTokenFeatures = new TestTokenFeatures();
+            testTokenFeatures.setElement(TestElementFactory.createElement(token));
+            testTokenFeatures.setFeatures(tokenFeatures);
+            resultFeatures.add(testTokenFeatures);
         }
         // Return text back for Token's
         if (restrictTokenAccess) {

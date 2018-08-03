@@ -1,9 +1,15 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 
+/**
+ * This class represents DTO to store data from {@link Token} for tests.
+ */
 public class TestElement {
 
     protected int begin;

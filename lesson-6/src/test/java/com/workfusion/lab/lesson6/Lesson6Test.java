@@ -67,17 +67,17 @@ public class Lesson6Test extends BaseLessonTest {
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 1 pattern for field "invoice_number"
-        checkElementsNew(tokens, "lesson_6_assignment_1_check_token_1.json");
+        checkElements(tokens, "lesson_6_assignment_1_check_token_1.json");
 
         // Checks the provided ners with the assignment 1 pattern for field "invoice_number"
 
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
-        checkElementsNew(ners, "lesson_6_assignment_1_check_ners_1_in.json");
+        checkElements(ners, "lesson_6_assignment_1_check_ners_1_in.json");
 
         // Gets all Sentence provided by the annotator to check
         List<Sentence> sentences = new ArrayList<>(document.findAll(Sentence.class));
         // Checks the provided sentences with the assignment 1 pattern
-        checkElementsNew(sentences, "lesson_6_assignment_1_check_sentences_1.json");
+        checkElements(sentences, "lesson_6_assignment_1_check_sentences_1.json");
 
         configurationData = buildConfiguration(Assignment1ModelConfiguration.class,
                 new FieldInfo.Builder("client_address").type(FieldType.FREE_TEXT).build());
@@ -92,11 +92,11 @@ public class Lesson6Test extends BaseLessonTest {
         tokens = new ArrayList<>(document.findAll(Token.class));
 
         // Checks the provided token with the assignment 1 pattern for field "client_address"
-        checkElementsNew(tokens, "lesson_6_assignment_1_check_token_2.json");
+        checkElements(tokens, "lesson_6_assignment_1_check_token_2.json");
 
         // Checks the provided ners with the assignment 1 pattern for field "client_address"
         ners = new ArrayList<>(document.findAll(NamedEntity.class));
-        checkElementsNew(ners, "lesson_6_assignment_1_check_ners_2_ca.json");
+        checkElements(ners, "lesson_6_assignment_1_check_ners_2_ca.json");
     }
 
     /**

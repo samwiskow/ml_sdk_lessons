@@ -66,11 +66,11 @@ public class Lesson8Test extends BaseLessonTest {
         // Gets all Tokens provided by the annotator to check for field "total_amount"
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
         // Checks the provided token with the assignment 3 pattern for field "total_amount"
-        checkElementsNew(tokens, "lesson_8_assignment_1_check_token.json");
+        checkElements(tokens, "lesson_8_assignment_1_check_token.json");
 
         // Checks the provided ners with the assignment 3 pattern for field "total_amount"
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
-        checkElementsNew(ners, "lesson_8_assignment_1_check_ners.json");
+        checkElements(ners, "lesson_8_assignment_1_check_ners.json");
 
         // Process FEs list
         List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
@@ -119,11 +119,11 @@ public class Lesson8Test extends BaseLessonTest {
         // Gets all Tokens provided by the annotator to check for field "client_address_state"
         List<Token> tokens = new ArrayList<>(document.findAll(Token.class));
         // Checks the provided token with the assignment 2 pattern for field "client_address_state"
-        checkElementsNew(tokens, "lesson_8_assignment_2_check_token.json");
+        checkElements(tokens, "lesson_8_assignment_2_check_token.json");
 
         // Checks the provided ners with the assignment 2 pattern for field "client_address_state"
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
-        checkElementsNew(ners, "lesson_8_assignment_2_check_ners.json");
+        checkElements(ners, "lesson_8_assignment_2_check_ners.json");
 
         // Process FEs list
         List<TestTokenFeatures> providedElementFeatures = processFeatures(document,

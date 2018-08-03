@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.model;
 
 import com.workfusion.vds.sdk.api.nlp.model.Element;
@@ -6,8 +9,17 @@ import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Sentence;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 
+/**
+ * Factory to create corresponding DTO instance for tests from {@link Element}.
+ */
 public class TestElementFactory {
 
+    /**
+     * Convert input element to corresponding TestElement based on input element type.
+     *
+     * @param element to convert
+     * @return test element dto
+     */
     public static TestElement createElement(Element element) {
         if (element instanceof Token) {
             return createElement((Token)element);
@@ -23,6 +35,12 @@ public class TestElementFactory {
 
     }
 
+    /**
+     * Convert {@link Token} to {@link TestElement}.
+     *
+     * @param token to convert
+     * @return test element dto
+     */
     public static TestElement createElement(Token token) {
         TestElement testElement = new TestElement();
         testElement.setBegin(token.getBegin());
@@ -31,6 +49,12 @@ public class TestElementFactory {
         return testElement;
     }
 
+    /**
+     * Convert {@link Sentence} to {@link TestSentence}.
+     *
+     * @param sentence to convert
+     * @return test element dto
+     */
     public static TestElement createElement(Sentence sentence) {
         TestSentence testElement = new TestSentence();
         testElement.setBegin(sentence.getBegin());
@@ -39,6 +63,12 @@ public class TestElementFactory {
         return testElement;
     }
 
+    /**
+     * Convert {@link NamedEntity} to {@link TestNamedEntity}.
+     *
+     * @param namedEntity to convert
+     * @return test element dto
+     */
     public static TestElement createElement(NamedEntity namedEntity) {
         TestNamedEntity testElement = new TestNamedEntity();
         testElement.setBegin(namedEntity.getBegin());
@@ -48,6 +78,12 @@ public class TestElementFactory {
         return testElement;
     }
 
+    /**
+     * Convert {@link Field} to {@link TestField}.
+     *
+     * @param field to convert
+     * @return test element dto
+     */
     public static TestElement createElement(Field field) {
         TestField testField = new TestField();
         testField.setBegin(field.getBegin());
@@ -58,5 +94,4 @@ public class TestElementFactory {
         testField.setName(field.getName());
         return testField;
     }
-
 }

@@ -1,3 +1,6 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.model;
 
 import java.math.BigDecimal;
@@ -6,6 +9,9 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.workfusion.vds.sdk.api.nlp.model.Field;
 
+/**
+ * This class represents DTO to store data from {@link Field} for tests.
+ */
 public class TestField extends TestElement {
 
     private String name;

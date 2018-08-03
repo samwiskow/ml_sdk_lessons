@@ -1,9 +1,15 @@
+/*
+ * Copyright (C) WorkFusion 2018. All rights reserved.
+ */
 package com.workfusion.lab.model;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 
+/**
+ * This class represents DTO to store data from {@link NamedEntity} for tests.
+ */
 public class TestNamedEntity extends TestElement {
 
     private String type;
