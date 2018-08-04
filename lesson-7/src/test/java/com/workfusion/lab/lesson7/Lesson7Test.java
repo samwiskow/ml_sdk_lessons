@@ -111,6 +111,7 @@ public class Lesson7Test extends BaseLessonTest {
         // Process FEs list
         List<TestTokenFeatures> providedElementFeatures = processFeatures(document, document, fes, true);
         // Checks the provided Features with the assignment pattern
+       // writeTestElementFE("lesson_7_assignment_2_check.json");
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_2_check.json");
     }
 
@@ -164,7 +165,6 @@ public class Lesson7Test extends BaseLessonTest {
         checkElementFeatures(providedElementFeatures, "lesson_7_assignment_2_invoice_number_check.json");
 
         // FIELD_EMAIL check
-
         // Creates ML-SDK Document to process
         document = getDocument("documents/lesson_7_assignment_3.html");
 
@@ -173,7 +173,7 @@ public class Lesson7Test extends BaseLessonTest {
                 new FieldInfo.Builder(Assignment3ModelConfiguration.FIELD_EMAIL).type(FieldType.INVOICE_TYPE).build());
 
         // Obtains defined annotators list.
-        annotators = getAnnotatorsFromConfiguration(configurationData, -1);
+        annotators = getAnnotatorsFromConfiguration(configurationData, 3);
         // Checking provided annotators
         assertThat(annotators.size()).isGreaterThanOrEqualTo(2);
         checkAnnotatorInList(annotators, MatcherTokenAnnotator.class, 0);
