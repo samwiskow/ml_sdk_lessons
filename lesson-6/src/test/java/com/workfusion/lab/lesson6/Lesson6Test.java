@@ -133,7 +133,7 @@ public class Lesson6Test extends BaseLessonTest {
 
         // Obtains defined fe list.
         fes = getFEsFromConfiguration(configurationData, 1);
-        log("Checking that the first annotator is SplitterTokenAnnotator.");
+        log("Checking that the IsOnlyNumberInTokenFE() is present for type 'INVOICE_NUMBER'.");
         assertThat(fes.get(0).getClass()).isEqualTo(Assignment2ModelConfiguration.IsOnlyNumberInTokenFE.class);
     }
 
