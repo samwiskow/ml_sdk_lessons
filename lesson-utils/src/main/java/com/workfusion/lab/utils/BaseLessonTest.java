@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -50,6 +51,8 @@ import com.google.gson.GsonBuilder;
 import com.opencsv.CSVReader;
 import com.workfusion.lab.model.TestElement;
 import com.workfusion.lab.model.TestElementFactory;
+import com.workfusion.lab.model.TestField;
+import com.workfusion.lab.model.TestNamedEntity;
 import com.workfusion.lab.model.TestSentence;
 import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.nlp.uima.api.parameter.sweeping.Dimension;
@@ -438,6 +441,22 @@ public class BaseLessonTest {
         }
     }
 
+    public void writeTestNerElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestNamedEntity> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestNamedEntity element= new TestNamedEntity();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            element.setType((String)pattern.get("type"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
+    }
 
     public void writeTestElement(String patternFile) throws IOException {
         List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
@@ -453,6 +472,25 @@ public class BaseLessonTest {
             result.add(element);
         }
         JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
+    }
+
+    public void writeFieldElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestField> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestField element= new TestField();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            element.setScore((BigDecimal)pattern.get("score"));
+            element.setName((String)pattern.get("name"));
+            element.setValue((String)pattern.get("value"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c:/1/"+patternFile), result);
     }
 
     public void writeSentenceElement(String patternFile) throws IOException {
@@ -488,78 +526,6 @@ public class BaseLessonTest {
             result.add(features);
         }
         JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
-    }
-
-    /**
-     * Serializes elements list into a file
-     *
-     * @param elements elements to serilize
-     * @param file     the file name
-     * @throws IOException
-     */
-    protected void writeElements(Collection<? extends Element> elements, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        elements.stream().forEach((t) -> {
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", t.getBegin());
-                    res.put("end", t.getEnd());
-                    res.put("text", t.getText());
-                    if (t instanceof NamedEntity) {
-                        res.put("type", ((NamedEntity) t).getType());
-                    }
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
-    }
-
-    /**
-     * Serializes element features list into a file
-     *
-     * @param elements
-     * @param file
-     * @throws IOException
-     */
-    protected void writeElementFeatures(Map<? extends Element, Set<Feature>> elements, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        elements.entrySet().stream().forEach(entry -> {
-                    Element element = entry.getKey();
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", element.getBegin());
-                    res.put("end", element.getEnd());
-                    res.put("text", element.getText());
-                    if (element instanceof NamedEntity) {
-                        res.put("type", ((NamedEntity) element).getType());
-                    }
-                    res.put("features", entry.getValue());
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
-    }
-
-
-    /**
-     * Serializes fields list into a file
-     *
-     * @param fields elements to serilize
-     * @param file   the file name
-     * @throws IOException
-     */
-    protected void writeFields(Collection<? extends Field> fields, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        fields.stream().forEach((t) -> {
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", t.getBegin());
-                    res.put("end", t.getEnd());
-                    res.put("text", t.getText());
-                    res.put("name", t.getName());
-                    res.put("value", t.getValue());
-                    res.put("score", t.getScore());
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
     }
 
     /**
