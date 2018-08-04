@@ -51,8 +51,6 @@ public class Lesson5Test extends BaseLessonTest {
     @Test
     public void assignment1() throws Exception {
         // Creates ML-SDK Document to process
-        writeSentenceElement("lesson_5_assignment_1_check_sentences.json");
-        writeTestElement("lesson_5_assignment_1_check_token.json");
         IeDocument document = getDocument("documents/lesson_5_assignment_1.txt");
 
         // Obtains model configuration
