@@ -1,1 +1,1 @@
-{"@type":"java.util.ArrayList","@items":[{"@type":"java.util.HashMap","end":{"@type":"int","value":86},"text":"Germany","type":"country","begin":{"@type":"int","value":79}},{"@type":"java.util.HashMap","end":{"@type":"int","value":277},"text":"USA","type":"country","begin":{"@type":"int","value":274}}]}
+{"@type":"java.util.ArrayList","@items":[{"@type":"com.workfusion.lab.model.TestNamedEntity","type":"country","begin":79,"end":86,"text":"Germany"},{"@type":"com.workfusion.lab.model.TestNamedEntity","type":"country","begin":274,"end":277,"text":"USA"}]}

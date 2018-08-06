@@ -70,6 +70,7 @@ public class Lesson6Test extends BaseLessonTest {
         checkElements(tokens, "lesson_6_assignment_1_check_token_1.json");
 
         // Checks the provided ners with the assignment 1 pattern for field "invoice_number"
+
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
         checkElements(ners, "lesson_6_assignment_1_check_ners_1_in.json");
 
@@ -132,7 +133,7 @@ public class Lesson6Test extends BaseLessonTest {
 
         // Obtains defined fe list.
         fes = getFEsFromConfiguration(configurationData, 1);
-        log("Checking that the first annotator is SplitterTokenAnnotator.");
+        log("Checking that the IsOnlyNumberInTokenFE() is present for type 'INVOICE_NUMBER'.");
         assertThat(fes.get(0).getClass()).isEqualTo(Assignment2ModelConfiguration.IsOnlyNumberInTokenFE.class);
     }
 

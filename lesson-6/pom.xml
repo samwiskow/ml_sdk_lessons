@@ -18,11 +18,6 @@
             <artifactId>lesson-utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.workfusion.lab</groupId>
-            <artifactId>lesson-solutions</artifactId>
-            <version>1.0</version>
-        </dependency>
     </dependencies>
 
 </project>

@@ -6,7 +6,6 @@ package com.workfusion.lab.lesson8;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -16,13 +15,16 @@ import com.workfusion.lab.lesson8.fe.IsNerPresentFE;
 import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
 import com.workfusion.lab.lesson8.fe.NerAbsolutePositionFE;
 import com.workfusion.lab.lesson8.fe.SimilarityKeysInPrevLineFE;
+import com.workfusion.lab.lesson8.run.Assignment1ModelExecutionRunner;
+import com.workfusion.lab.lesson8.run.Assignment1ModelTrainingRunner;
+import com.workfusion.lab.lesson8.run.Assignment2ModelExecutionRunner;
+import com.workfusion.lab.lesson8.run.Assignment2ModelTrainingRunner;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
-import com.workfusion.vds.sdk.api.nlp.fe.Feature;
-import com.workfusion.vds.sdk.api.nlp.model.Element;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
@@ -76,12 +78,24 @@ public class Lesson8Test extends BaseLessonTest {
         checkElements(ners, "lesson_8_assignment_1_check_ners.json");
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new NerAbsolutePositionFE(), new KeywordsPreviousLineFE("total") //Assignment FE to check
         );
-
         // Checks the provided Features with the assignment 3 pattern
         checkElementFeatures(providedElementFeatures, "lesson_8_assignment_1_check_fe.json");
+
+        // Obtains training statistics
+        executeRunner(Assignment1ModelTrainingRunner.class);
+        Map<String, FieldStatistic> trainingStatistics = getTrainingFieldStatistics(Assignment1ModelTrainingRunner.OUTPUT_DIR_PATH);
+
+        // Check the field statistics
+        checkFieldStatistics(trainingStatistics, Assignment1ModelConfiguration.FIELD_TOTAL_AMOUNT, 0.9, 0.6);
+
+        executeRunner(Assignment1ModelExecutionRunner.class);
+        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment1ModelTrainingRunner.OUTPUT_DIR_PATH + "/extract");
+
+        // Check the field statistics
+        checkFieldStatistics(executionStatistics, Assignment1ModelConfiguration.FIELD_TOTAL_AMOUNT, 0.9, 0.6);
     }
 
     /**
@@ -129,12 +143,25 @@ public class Lesson8Test extends BaseLessonTest {
         checkElements(ners, "lesson_8_assignment_2_check_ners.json");
 
         // Process FEs list
-        Map<Element, Set<Feature>> providedElementFeatures = processFeatures(document,
+        List<TestTokenFeatures> providedElementFeatures = processFeatures(document,
                 new IsNerPresentFE("state"), new SimilarityKeysInPrevLineFE("address") //Assignment FE to check
         );
 
         // Checks the provided Features with the assignment 2 pattern
         checkElementFeatures(providedElementFeatures, "lesson_8_assignment_2_check_fe.json");
+
+        // Obtains training statistics
+        executeRunner(Assignment2ModelTrainingRunner.class);
+        Map<String, FieldStatistic> trainingStatistics = getTrainingFieldStatistics(Assignment2ModelTrainingRunner.OUTPUT_DIR_PATH);
+
+        // Check the field statistics
+        checkFieldStatistics(trainingStatistics, Assignment2ModelConfiguration.FIELD_STATE, 0.9, 0.6);
+
+        executeRunner(Assignment2ModelExecutionRunner.class);
+        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment2ModelTrainingRunner.OUTPUT_DIR_PATH + "/extract");
+
+        // Check the field statistics
+        checkFieldStatistics(executionStatistics, Assignment2ModelConfiguration.FIELD_STATE, 0.9, 0.6);
     }
 
 }

@@ -4,7 +4,6 @@
 package com.workfusion.lab.lesson8.processing;
 
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
-import com.workfusion.vds.sdk.api.nlp.processing.ProcessingException;
 import com.workfusion.vds.sdk.api.nlp.processing.Processor;
 
 public class TotalAmountPostProcessor implements Processor<IeDocument> {

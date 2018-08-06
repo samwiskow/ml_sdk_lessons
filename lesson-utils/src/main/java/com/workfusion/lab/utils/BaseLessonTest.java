@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -25,7 +26,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,13 +33,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ListMultimap;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.opencsv.CSVReader;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,6 +42,19 @@ import org.w3c.dom.Node;
 import org.xmlunit.builder.Input;
 import org.xmlunit.xpath.JAXPXPathEngine;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ListMultimap;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.opencsv.CSVReader;
+import com.workfusion.lab.model.TestElement;
+import com.workfusion.lab.model.TestElementFactory;
+import com.workfusion.lab.model.TestField;
+import com.workfusion.lab.model.TestNamedEntity;
+import com.workfusion.lab.model.TestSentence;
+import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.nlp.uima.api.parameter.sweeping.Dimension;
 import com.workfusion.nlp.uima.pipeline.constants.ConfigurationConstants;
 import com.workfusion.nlp.uima.pipeline.constants.PipelineConstants;
@@ -91,18 +97,43 @@ public class BaseLessonTest {
     protected static final Log logger = LogFactory.getLog("TRAINING");
 
     /**
+     * Input directory path to use.
+     */
+    public final static String TEST_INPUT_DIR_PATH = "data/test/";
+
+    /**
+     * Output directory path to use.
+     */
+    public final static String EXTRACT_OUTPUT_DIR_PATH = "results/extract/";
+
+    /**
+     * Input directory path to use.
+     */
+    public final static String TRAIN_INPUT_DIR_PATH = "data/train/";
+
+    /**
+     * Output directory path to use.
+     */
+    public final static String TRAINING_OUTPUT_DIR_PATH = "results/training/";
+
+    /**
+     * Model directory path to use.
+     */
+    public final static String MODEL_DIR_PATH = TRAINING_OUTPUT_DIR_PATH + "output/model/";
+
+    /**
      * Helper method: creates default configuration context.
      *
      * @return
      */
-    protected static DefaultConfigurationContext getConfigurationContext() {
+    protected DefaultConfigurationContext getConfigurationContext() {
         return new DefaultConfigurationContext(getTestFieldInfo(), new HashMap<>());
     }
 
     /**
      * Helper method: creates a default FieldInfo.
      */
-    protected static FieldInfo getTestFieldInfo() {
+    protected FieldInfo getTestFieldInfo() {
         return new FieldInfo.Builder("test")
                 .type(FieldType.FREE_TEXT)
                 .build();
@@ -138,6 +169,15 @@ public class BaseLessonTest {
      * Helper method: returns annotators from dimension.
      */
     protected List<Annotator> getAnnotatorsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData);
+        assertThat(annotators.size()).isEqualTo(expectedSize);
+        return annotators;
+    }
+
+    /**
+     * Helper method: returns annotators from dimension.
+     */
+    protected List<Annotator> getAnnotatorsFromConfiguration(ConfigurationData configurationData) {
         ListMultimap<String, Dimension> dimensions = configurationData.getParameterSpace().getDimensions();
         // Obtains defined annotators list.
         List<Annotator> annotators = null;
@@ -148,17 +188,22 @@ public class BaseLessonTest {
         }
         log("Checking that annotators are defined in @Named methods.");
         assertThat(annotators).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(annotators.size()).isEqualTo(expectedSize);
-        }
         return annotators;
     }
-
 
     /**
      * Helper method: returns FEs from dimension.
      */
     protected List<FeatureExtractor> getFEsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData);
+        assertThat(fes.size()).isEqualTo(expectedSize);
+        return fes;
+    }
+
+    /**
+     * Helper method: returns FEs from dimension.
+     */
+    protected List<FeatureExtractor> getFEsFromConfiguration(ConfigurationData configurationData) {
         ListMultimap<String, Dimension> dimensions = configurationData.getParameterSpace().getDimensions();
         // Obtains defined annotators list.
         List<FeatureExtractor> fes = null;
@@ -169,28 +214,33 @@ public class BaseLessonTest {
         }
         log("Checking that FEs are defined in @Named methods.");
         assertThat(fes).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(fes.size()).isEqualTo(expectedSize);
-        }
         return fes;
     }
 
     /**
-     * Helper method: returns annotators from dimension.
+     * Helper method: returns processors from dimension.
      */
     protected List<Processor> getProcessorsFromConfiguration(ConfigurationData configurationData, int expectedSize) {
+        List<Processor> processors = getProcessorsFromConfiguration(configurationData);
+        if (expectedSize > -1) {
+            assertThat(processors.size()).isEqualTo(expectedSize);
+        }
+        return processors;
+    }
+
+    /**
+     * Helper method: returns processors from dimension.
+     */
+    protected List<Processor> getProcessorsFromConfiguration(ConfigurationData configurationData) {
         // Obtains defined annotators list.
         List<Processor> processors = null;
         try {
-            processors = (List<Processor>) configurationData.getPostProcessors();
+            processors = configurationData.getPostProcessors();
         } catch (Exception e) {
             log("There is no @Named returns List<Processor<IeDocument>> in the ModelConfiguration class.");
         }
         log("Checking that post-processors are defined in @Named methods.");
         assertThat(processors).isNotNull();
-        if (expectedSize > -1) {
-            assertThat(processors.size()).isEqualTo(expectedSize);
-        }
         return processors;
     }
 
@@ -331,29 +381,23 @@ public class BaseLessonTest {
         log("Checking provided document elements ...");
 
         // Loads token check patterns
-        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+        List<TestElement> expected = (List<TestElement>) JsonSerializationUtil.readObject(this.getClass()
                 .getResourceAsStream(patternFile));
 
-        for (int i = 0; i < Math.min(elements.size(), patterns.size()); i++) {
-            log("{0}:{1}", elements.get(i).getClass().getSimpleName().substring(4), i);
-            Map<String, Object> pattern = patterns.get(i);
+        for (int i = 0; i < Math.min(elements.size(), expected.size()); i++) {
+            TestElement expectedElement = expected.get(i);
+            TestElement actualElement = TestElementFactory.createElement(elements.get(i));
+            log("Element:{0}", i);
+            log("\tExpected element:");
+            logger.info("\t\t"+expectedElement.toString());
+            log("\tActual element:");
+            logger.info("\t\t"+actualElement.toString());
 
-            log("\ttext: \"{0}\" <-- \"{1}\"", elements.get(i).getText(), pattern.get("text"));
-            assertThat(elements.get(i).getText()).isEqualTo(pattern.get("text"));
+            assertThat(expectedElement).isEqualTo(actualElement);
 
-            log("\tbegin: {0} <-- {1}", elements.get(i).getBegin(), pattern.get("begin"));
-            assertThat(elements.get(i).getBegin()).isEqualTo(pattern.get("begin"));
-
-            log("\tend: {0} <-- {1}", elements.get(i).getEnd(), pattern.get("end"));
-            assertThat(elements.get(i).getEnd()).isEqualTo(pattern.get("end"));
-
-            if (elements.get(i) instanceof NamedEntity) {
-                log("\ttype: \"{0}\" <-- \"{1}\"", ((NamedEntity) elements.get(i)).getType(), pattern.get("type"));
-                assertThat(((NamedEntity) elements.get(i)).getType()).isEqualTo(pattern.get("type"));
-            }
-        }
-        log("Checking number of provided elements size: {0} <-- {1}", elements.size(), patterns.size());
-        assertThat(elements.size()).isEqualTo(patterns.size());
+         }
+        log("Checking number of provided elements size: {0} <-- {1}", elements.size(), expected.size());
+        assertThat(elements.size()).isEqualTo(expected.size());
     }
 
     /**
@@ -362,164 +406,132 @@ public class BaseLessonTest {
      * @param providedElementFeatures the element->feature set
      * @param patternFile             the pattern JSON file to load and check
      */
-    protected void checkElementFeatures(Map<Element, Set<Feature>> providedElementFeatures, String patternFile) throws IOException {
+    protected void checkElementFeatures(List<TestTokenFeatures> actualFeatures, String patternFile) throws IOException {
         log("Checking provided element features ...");
 
-        // Loads FE check patterns
-        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+        // Loads FE expected features
+        List<TestTokenFeatures> expectedFeatures = (List<TestTokenFeatures>) JsonSerializationUtil.readObject(this.getClass()
                 .getResourceAsStream(patternFile));
+        log("\tChecking number of tokens: {0} <-- {1}", actualFeatures.size(), expectedFeatures.size());
+        assertThat(actualFeatures.size()).isEqualTo(expectedFeatures.size());
 
-        List<Map.Entry<Element, Set<Feature>>> providedEntries = providedElementFeatures.entrySet().stream().collect(Collectors.toList());
+        for (int i = 0; i < expectedFeatures.size(); i++) {
+            TestTokenFeatures expectedElementFeature = expectedFeatures.get(i);
+            TestTokenFeatures actualElementFeature = actualFeatures.get(i);
 
-        for (int i = 0; i < Math.min(providedEntries.size(), patterns.size()); i++) {
-            Element element = providedEntries.get(i).getKey();
-            List<Feature> elementFeatures = providedEntries.get(i).getValue().stream().collect(Collectors.toList());
+            if (expectedElementFeature.getFeatures().size() != actualElementFeature.getFeatures().size() || expectedElementFeature.getFeatures().size() != 0) {
+                logger.info("\t"+actualElementFeature.getElement().toString());
+                log("\t\tChecking token features.");
+                log("\t\tExpected features:");
+                expectedElementFeature.getFeatures().forEach(f->{
+                    log("\t\t\tFeature name: \"{0}\", value: \"{1}\"",
+                            f.getName(),
+                            f.getValue());
+                });
+                log("\t\tActual features:");
+                actualElementFeature.getFeatures().forEach(f->{
+                    log("\t\t\tFeature name: \"{0}\", value: \"{1}\"",
+                            f.getName(),
+                            f.getValue());
+                });
 
-            Map<String, Object> pattern = patterns.get(i);
-            List<Feature> patternFeatures = ((Set<Feature>) pattern.get("features")).stream().collect(Collectors.toList());
-
-            if (!(elementFeatures.size() == patternFeatures.size() && patternFeatures.size() == 0)) {
-                log("\t{0}:{1}, \"{2}\", {3}-{4}",
-                        element.getClass().getSimpleName().substring(4),
-                        i,
-                        element.getText(),
-                        element.getBegin(),
-                        element.getEnd());
-                log("\t\tChecking the number of provided features.");
-                assertThat(elementFeatures.size()).isEqualTo(patternFeatures.size());
-
-                for (int j = 0; j < Math.min(patternFeatures.size(), elementFeatures.size()); j++) {
-
-                    log("\t\tfeature:{0}, name: \"{1}\" <-- \"{2}\"",
-                            j,
-                            elementFeatures.get(j).getName(),
-                            patternFeatures.get(j).getName());
-                    assertThat(elementFeatures.get(j).getName()).isEqualTo(patternFeatures.get(j).getName());
-                }
+                assertThat(expectedElementFeature.getFeatures()).containsExactlyElementsOf(actualElementFeature.getFeatures());
             }
 
         }
-        log("\tChecking number of checked tokens: {0} <-- {1}", providedEntries.size(), patterns.size());
-        assertThat(providedEntries.size()).isEqualTo(patterns.size());
-
     }
 
-    /**
-     * Helper method: Checks the provided fields with the pattern
-     *
-     * @param fields      the element list
-     * @param patternFile the pattern JSON file to load and check
-     */
-    protected void checkFields(List<? extends Field> fields, String patternFile) throws IOException {
-        log("Checking provided document fields ...");
-
-        // Loads processor check patterns
+    public void writeTestNerElement(String patternFile) throws IOException {
         List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
                 .getResourceAsStream(patternFile));
 
-        for (int i = 0; i < Math.min(fields.size(), patterns.size()); i++) {
-            log("{0}:{1}", fields.get(i).getClass().getSimpleName().substring(4), i);
-            Map<String, Object> pattern = patterns.get(i);
+        List<TestNamedEntity> result = new ArrayList<>();
 
-            log("\tname: \"{0}\" <-- \"{1}\"", fields.get(i).getName(), pattern.get("name"));
-            assertThat(fields.get(i).getName()).isEqualTo(pattern.get("name"));
-
-            log("\ttext: \"{0}\" <-- \"{1}\"", fields.get(i).getText(), pattern.get("text"));
-            assertThat(fields.get(i).getText()).isEqualTo(pattern.get("text"));
-
-            log("\tvalue: \"{0}\" <-- \"{1}\"", fields.get(i).getValue(), pattern.get("value"));
-            assertThat(fields.get(i).getValue()).isEqualTo(pattern.get("value"));
-
-            log("\tbegin: {0} <-- {1}", fields.get(i).getBegin(), pattern.get("begin"));
-            assertThat(fields.get(i).getBegin()).isEqualTo(pattern.get("begin"));
-
-            log("\tend: {0} <-- {1}", fields.get(i).getEnd(), pattern.get("end"));
-            assertThat(fields.get(i).getEnd()).isEqualTo(pattern.get("end"));
-
-            log("\tscore: {0} <-- {1}", fields.get(i).getScore(), pattern.get("score"));
-            assertThat(fields.get(i).getScore()).isEqualTo(pattern.get("score"));
-
+        for (Map<String, Object> pattern: patterns) {
+            TestNamedEntity element= new TestNamedEntity();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            element.setType((String)pattern.get("type"));
+            result.add(element);
         }
-        log("Checking number of provided fields size: {0} <-- {1}", fields.size(), patterns.size());
-        assertThat(fields.size()).isEqualTo(patterns.size());
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
     }
 
-    /**
-     * Serializes elements list into a file
-     *
-     * @param elements elements to serilize
-     * @param file     the file name
-     * @throws IOException
-     */
-    protected void writeElements(Collection<? extends Element> elements, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        elements.stream().forEach((t) -> {
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", t.getBegin());
-                    res.put("end", t.getEnd());
-                    res.put("text", t.getText());
-                    if (t instanceof NamedEntity) {
-                        res.put("type", ((NamedEntity) t).getType());
-                    }
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
+    public void writeTestElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestElement> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestElement element= new TestElement();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
     }
 
-    /**
-     * Serializes element features list into a file
-     *
-     * @param elements
-     * @param file
-     * @throws IOException
-     */
-    protected void writeElementFeatures(Map<? extends Element, Set<Feature>> elements, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        elements.entrySet().stream().forEach(entry -> {
-                    Element element = entry.getKey();
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", element.getBegin());
-                    res.put("end", element.getEnd());
-                    res.put("text", element.getText());
-                    if (element instanceof NamedEntity) {
-                        res.put("type", ((NamedEntity) element).getType());
-                    }
-                    res.put("features", entry.getValue());
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
+    public void writeFieldElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestField> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestField element= new TestField();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            element.setScore((BigDecimal)pattern.get("score"));
+            element.setName((String)pattern.get("name"));
+            element.setValue((String)pattern.get("value"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c:/1/"+patternFile), result);
     }
 
+    public void writeSentenceElement(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
 
-    /**
-     * Serializes fields list into a file
-     *
-     * @param fields elements to serilize
-     * @param file   the file name
-     * @throws IOException
-     */
-    protected void writeFields(Collection<? extends Field> fields, String file) throws IOException {
-        final List<Map<String, Object>> ser = new ArrayList<>();
-        fields.stream().forEach((t) -> {
-                    Map<String, Object> res = new HashMap<String, Object>();
-                    res.put("begin", t.getBegin());
-                    res.put("end", t.getEnd());
-                    res.put("text", t.getText());
-                    res.put("name", t.getName());
-                    res.put("value", t.getValue());
-                    res.put("score", t.getScore());
-                    ser.add(res);
-                }
-        );
-        JsonSerializationUtil.writeObject(new File(file), ser);
+        List<TestSentence> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestSentence element= new TestSentence();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            result.add(element);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
+    }
+
+    public void writeTestElementFE(String patternFile) throws IOException {
+        List<Map<String, Object>> patterns = (List<Map<String, Object>>) JsonSerializationUtil.readObject(this.getClass()
+                .getResourceAsStream(patternFile));
+
+        List<TestTokenFeatures> result = new ArrayList<>();
+
+        for (Map<String, Object> pattern: patterns) {
+            TestElement element= new TestElement();
+            element.setText((String)pattern.get("text"));
+            element.setBegin((Integer)pattern.get("begin"));
+            element.setEnd((Integer)pattern.get("end"));
+            TestTokenFeatures features = new TestTokenFeatures();
+            features.setElement(element);
+            features.setFeatures((Set<Feature>)pattern.get("features"));
+            result.add(features);
+        }
+        JsonSerializationUtil.writeObject(new File("c://testdata/lessons/"+patternFile), result);
     }
 
     /**
      * Helper method: process FE list for the document
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document document,
+    protected List<TestTokenFeatures> processFeatures(Document document,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, Arrays.asList(fes));
     }
@@ -527,7 +539,7 @@ public class BaseLessonTest {
     /**
      * Helper method: process FE list for the document
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document document,
+    protected List<TestTokenFeatures> processFeatures(Document document,
             List<FeatureExtractor> fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(document, document, fes, false);
     }
@@ -650,7 +662,7 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document onStartDocument,
+    protected List<TestTokenFeatures> processFeatures(Document onStartDocument,
             Document processDocument,
             FeatureExtractor... fes) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         return processFeatures(onStartDocument, processDocument, Arrays.asList(fes), false);
@@ -664,20 +676,19 @@ public class BaseLessonTest {
      * @param fes             the feature extractor list to process
      * @return the features map to check
      */
-    protected Map<Element, Set<Feature>> processFeatures(Document onStartDocument,
+    protected List<TestTokenFeatures> processFeatures(Document onStartDocument,
             Document processDocument,
             List<FeatureExtractor> fes,
             boolean restrictTokenAccess) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         log("Feature extractors initialization ...");
-        Class focusElementClass = UimaElementFactory.getInstance().findElementType(org.cleartk.token.type.Token.class);
         DefaultCacheBuilder indexBuilder = new DefaultCacheBuilder();
         for (FeatureExtractor fe : fes) {
             log("\t{0}::Init", fe.getClass().getName());
-            LifecycleEventExecutor.getInstance().executeInit(fe, Collections.emptyMap(), indexBuilder, focusElementClass);
+            LifecycleEventExecutor.getInstance().executeInit(fe, Collections.emptyMap(), indexBuilder, Token.class);
 
             log("\t{0}::OnDocumentStart", fe.getClass().getName());
-            LifecycleEventExecutor.getInstance().executeOnDocumentStart(fe, onStartDocument, focusElementClass);
+            LifecycleEventExecutor.getInstance().executeOnDocumentStart(fe, onStartDocument, Token.class);
         }
 
         log("Applying feature extractor to Tokens.");
@@ -685,7 +696,7 @@ public class BaseLessonTest {
         List<Token> tokens = onStartDocument.findAll(Token.class).stream().collect(Collectors.toList());
 
         // Gives all features provided by custom FEs
-        Map<Element, Set<Feature>> providedElementFeatures = new LinkedHashMap<>();
+        List<TestTokenFeatures> resultFeatures = new ArrayList<>();
         // Restrict access to Token TEXT
         List<String> tokenText = new ArrayList<>();
         if (restrictTokenAccess) {
@@ -694,17 +705,20 @@ public class BaseLessonTest {
                 FieldUtils.writeField(token, "text", "NO ACCESS", true);
             }
         }
-        for (FeatureExtractor fe : fes) {
-            log("\t{0}::extract", fe.getClass().getName());
-            for (Token token : tokens) {
-                if (restrictTokenAccess) {
-                    tokenText.add(token.getText());
-                    FieldUtils.writeField(token, "text", "NO ACCESS", true);
-                }
-                Collection<Feature> features = fe.extract(processDocument, token);
-                Collection<Feature> tokenFeatures = providedElementFeatures.computeIfAbsent(token, k -> new HashSet());
-                tokenFeatures.addAll(features);
+        log("\tExtract features");
+        for (Token token : tokens) {
+            if (restrictTokenAccess) {
+                tokenText.add(token.getText());
+                FieldUtils.writeField(token, "text", "NO ACCESS", true);
             }
+            Set<Feature> tokenFeatures = new HashSet<>();
+            for (FeatureExtractor fe : fes) {
+                tokenFeatures.addAll(fe.extract(processDocument, token));
+            }
+            TestTokenFeatures testTokenFeatures = new TestTokenFeatures();
+            testTokenFeatures.setElement(TestElementFactory.createElement(token));
+            testTokenFeatures.setFeatures(tokenFeatures);
+            resultFeatures.add(testTokenFeatures);
         }
         // Return text back for Token's
         if (restrictTokenAccess) {
@@ -723,7 +737,7 @@ public class BaseLessonTest {
             LifecycleEventExecutor.getInstance().executeDestroy(fe, Collections.emptyMap());
         }
 
-        return providedElementFeatures;
+        return resultFeatures;
     }
 
 
@@ -810,55 +824,6 @@ public class BaseLessonTest {
     }
 
     /**
-     * Security manager class implementation to prevent System.exit()
-     */
-    private static class PreventSystemExitSecurityManager extends SecurityManager {
-
-        private final SecurityManager _prevMgr;
-
-        public PreventSystemExitSecurityManager(final SecurityManager parent) {
-            this._prevMgr = parent;
-        }
-
-        public PreventSystemExitSecurityManager() {
-            this(System.getSecurityManager());
-        }
-
-
-        @Override
-        public void checkPermission(final Permission perm) {
-        }
-
-        @Override
-        public void checkPermission(Permission perm, Object context) {
-        }
-
-        @Override
-        public void checkExit(final int code) {
-            throw new PreventSystemExitException();
-        }
-
-        public SecurityManager getPreviousMgr() { return _prevMgr; }
-
-        public static class PreventSystemExitException extends RuntimeException {
-        }
-
-        public static void disableSystemExit(boolean disabled) {
-            if (disabled) {
-                System.setSecurityManager(new PreventSystemExitSecurityManager());
-            } else {
-                SecurityManager mgr = System.getSecurityManager();
-                if ((mgr != null) && (mgr instanceof PreventSystemExitSecurityManager)) {
-                    PreventSystemExitSecurityManager smgr = (PreventSystemExitSecurityManager) mgr;
-                    System.setSecurityManager(smgr.getPreviousMgr());
-                } else {
-                    System.setSecurityManager(null);
-                }
-            }
-        }
-    }
-
-    /**
      * Execute a runner class.
      */
     protected void executeRunner(Class<?> runnerClass) throws Exception {
@@ -873,43 +838,6 @@ public class BaseLessonTest {
             // Do nothing
         } finally {
             PreventSystemExitSecurityManager.disableSystemExit(false);
-        }
-    }
-
-    /**
-     * Input directory path to use.
-     */
-    public final static String TEST_INPUT_DIR_PATH = "data/test/";
-    /**
-     * Output directory path to use.
-     */
-    public final static String EXTRACT_OUTPUT_DIR_PATH = "results/extract/";
-
-    /**
-     * Input directory path to use.
-     */
-    public final static String TRAIN_INPUT_DIR_PATH = "data/train/";
-    /**
-     * Output directory path to use.
-     */
-    public final static String TRAINING_OUTPUT_DIR_PATH = "results/training/";
-
-    /**
-     * Model directory path to use.
-     */
-    public final static String MODEL_DIR_PATH = TRAINING_OUTPUT_DIR_PATH + "output/model/";
-
-    /**
-     * Field statistics wrapper
-     */
-    public static class FieldStatistic {
-
-        double precision;
-        double recall;
-
-        public FieldStatistic(double precision, double recall) {
-            this.precision = precision;
-            this.recall = recall;
         }
     }
 
@@ -1034,17 +962,6 @@ public class BaseLessonTest {
         return null;
     }
 
-    private static class FieldsExclusionStrategy implements ExclusionStrategy {
-
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
-
-        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
-            return fieldAttributes.getDeclaredClass().isInterface();
-        }
-    }
-
     private Map<String, Object> loadConfigurationFromFile(File configurationFile) {
         try (InputStream stream = new BufferedInputStream(new FileInputStream(configurationFile))) {
             return (Map<String, Object>) JsonSerializationUtil.readObject(stream);
@@ -1095,6 +1012,82 @@ public class BaseLessonTest {
         log("Checking the HPO constants");
         assertThat(hpoConfiguration.getTimeLimit()).isEqualTo(600);
         assertThat(hpoConfiguration.getMaxExpWithSameBestScore()).isEqualTo(5);
+    }
+
+    /**
+     * Security manager class implementation to prevent System.exit()
+     */
+    private static class PreventSystemExitSecurityManager extends SecurityManager {
+
+        private final SecurityManager _prevMgr;
+
+        public PreventSystemExitSecurityManager(final SecurityManager parent) {
+            this._prevMgr = parent;
+        }
+
+        public PreventSystemExitSecurityManager() {
+            this(System.getSecurityManager());
+        }
+
+
+        @Override
+        public void checkPermission(final Permission perm) {
+        }
+
+        @Override
+        public void checkPermission(Permission perm, Object context) {
+        }
+
+        @Override
+        public void checkExit(final int code) {
+            throw new PreventSystemExitException();
+        }
+
+        public SecurityManager getPreviousMgr() { return _prevMgr; }
+
+        public static class PreventSystemExitException extends RuntimeException {
+        }
+
+        public static void disableSystemExit(boolean disabled) {
+            if (disabled) {
+                System.setSecurityManager(new PreventSystemExitSecurityManager());
+            } else {
+                SecurityManager mgr = System.getSecurityManager();
+                if ((mgr != null) && (mgr instanceof PreventSystemExitSecurityManager)) {
+                    PreventSystemExitSecurityManager smgr = (PreventSystemExitSecurityManager) mgr;
+                    System.setSecurityManager(smgr.getPreviousMgr());
+                } else {
+                    System.setSecurityManager(null);
+                }
+            }
+        }
+    }
+
+    /**
+     * Field statistics wrapper
+     */
+    public static class FieldStatistic {
+
+        double precision;
+        double recall;
+
+        public FieldStatistic(double precision, double recall) {
+            this.precision = precision;
+            this.recall = recall;
+        }
+    }
+
+    private static class FieldsExclusionStrategy implements ExclusionStrategy {
+
+        @Override
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return false;
+        }
+
+        @Override
+        public boolean shouldSkipField(FieldAttributes fieldAttributes) {
+            return fieldAttributes.getDeclaredClass().isInterface();
+        }
     }
 
 }

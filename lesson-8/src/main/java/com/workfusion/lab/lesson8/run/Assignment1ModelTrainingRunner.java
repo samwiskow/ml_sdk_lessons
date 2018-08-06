@@ -10,10 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.workfusion.lab.lesson8.config.Assignment1ModelConfiguration;
 import com.workfusion.lab.lesson8.model.Assignment1Model;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
-import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
 import com.workfusion.vds.sdk.run.ModelRunner;
 import com.workfusion.vds.sdk.run.config.LocalTrainingConfiguration;
 

@@ -55,7 +55,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment1DatePostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_1_check.json");
+        checkElements(fields, "lesson_4_assignment_1_check.json");
     }
 
     /**
@@ -88,7 +88,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment2TotalPostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_2_check.json");
+        checkElements(fields, "lesson_4_assignment_2_check.json");
     }
 
 
@@ -123,7 +123,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment3IBANPostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_3_check.json");
+        checkElements(fields, "lesson_4_assignment_3_check.json");
     }
 
     /**
@@ -160,7 +160,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment4AddCountryPostProcessor.FIELD_COUNTRY));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_4_check.json");
+        checkElements(fields, "lesson_4_assignment_4_check.json");
     }
 
 
@@ -199,7 +199,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment5PricePostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_5_check.json");
+        checkElements(fields, "lesson_4_assignment_5_check.json");
     }
 
     /**
@@ -233,7 +233,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment6SimilarityPostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_6_check.json");
+        checkElements(fields, "lesson_4_assignment_6_check.json");
     }
 
     /**
@@ -267,7 +267,7 @@ public class Lesson4Test extends BaseLessonTest {
         List<Field> fields = new ArrayList<>(document.findFields(Assignment7ExpandPostProcessor.FIELD_NAME));
 
         // Checks the provided fields with the assignment's pattern
-        checkFields(fields, "lesson_4_assignment_7_check.json");
+        checkElements(fields, "lesson_4_assignment_7_check.json");
     }
 
 }
