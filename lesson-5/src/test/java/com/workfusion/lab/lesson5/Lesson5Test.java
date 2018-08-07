@@ -172,7 +172,7 @@ public class Lesson5Test extends BaseLessonTest {
         // Checks the provided token with the assignment 3 pattern
         checkElements(tokens, "lesson_5_assignment_3_check_token.json");
 
-        // Gets all Sentence provided by the annotator to check
+        // Gets all ners provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 3 pattern
@@ -227,7 +227,7 @@ public class Lesson5Test extends BaseLessonTest {
         // Checks the provided token with the assignment 4 pattern
         checkElements(tokens, "lesson_5_assignment_4_check_token.json");
 
-        // Gets all Sentence provided by the annotator to check
+        // Gets all ners provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 4 pattern
@@ -290,7 +290,6 @@ public class Lesson5Test extends BaseLessonTest {
         // Checks the provided ners with the assignment 4 pattern
         checkElements(ners, "lesson_5_assignment_5_check_ners.json");
 
-
         // Obtains defined FEs list.
         List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
 
@@ -342,7 +341,7 @@ public class Lesson5Test extends BaseLessonTest {
         // Checks the provided token with the assignment 6 pattern
         checkElements(tokens, "lesson_5_assignment_6_check_token.json");
 
-        // Gets all Sentence provided by the annotator to check
+        // Gets all ners provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 6 pattern
@@ -397,7 +396,7 @@ public class Lesson5Test extends BaseLessonTest {
         // Checks the provided token with the assignment 7 pattern
         checkElements(tokens, "lesson_5_assignment_7_check_token.json");
 
-        // Gets all Sentence provided by the annotator to check
+        // Gets all ners provided by the annotator to check
         List<NamedEntity> ners = new ArrayList<>(document.findAll(NamedEntity.class));
 
         // Checks the provided ners with the assignment 6 pattern
