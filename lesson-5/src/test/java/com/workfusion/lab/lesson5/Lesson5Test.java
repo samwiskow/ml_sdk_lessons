@@ -14,6 +14,8 @@ import com.workfusion.lab.lesson5.config.Assignment2ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment3ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment4ModelConfiguration;
 import com.workfusion.lab.lesson5.config.Assignment5ModelConfiguration;
+import com.workfusion.lab.lesson5.config.Assignment6ModelConfiguration;
+import com.workfusion.lab.lesson5.config.Assignment7ModelConfiguration;
 import com.workfusion.lab.model.TestTokenFeatures;
 import com.workfusion.lab.utils.BaseLessonTest;
 import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
@@ -313,7 +315,7 @@ public class Lesson5Test extends BaseLessonTest {
         IeDocument document = getDocument("documents/lesson_5_assignment_6.txt");
 
         // Obtains model configuration
-        ConfigurationData configurationData = buildConfiguration(Assignment5ModelConfiguration.class);
+        ConfigurationData configurationData = buildConfiguration(Assignment6ModelConfiguration.class);
 
         // Obtains defined annotators list.
         List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData, 3);
@@ -368,7 +370,7 @@ public class Lesson5Test extends BaseLessonTest {
         IeDocument document = getDocument("documents/lesson_5_assignment_7.txt");
 
         // Obtains model configuration
-        ConfigurationData configurationData = buildConfiguration(Assignment5ModelConfiguration.class);
+        ConfigurationData configurationData = buildConfiguration(Assignment7ModelConfiguration.class);
 
         // Obtains defined annotators list.
         List<Annotator> annotators = getAnnotatorsFromConfiguration(configurationData, 3);
@@ -402,7 +404,7 @@ public class Lesson5Test extends BaseLessonTest {
         checkElements(ners, "lesson_5_assignment_7_check_ners.json");
 
         // Obtains defined FEs list.
-        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 1);
+        List<FeatureExtractor> fes = getFEsFromConfiguration(configurationData, 2);
 
         // Gives all features provided by custom FEs
         List<TestTokenFeatures> providedElementFeatures = processFeatures(document, fes);
