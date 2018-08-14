@@ -200,7 +200,7 @@ public class Lesson7Test extends BaseLessonTest {
      * (the configuration must be the fields content depended) that provides:
      * - a "price" feature for the token tagged by "price" fields
      * - a "column_index"=<column index> for the covering row if any
-     * - a "next_token_number"=<1> if next token contains only number
+     * - a "next_token_number"=<1> if previous token contains only number('1234 token' in this case for 'token' feature will be created)
      * Check the provided "documents/lesson_7_assignment_4.html" for details.
      * You must use:
      * - the MatcherTokenAnnotator (use the provided Regexp) as a first annotator - to provide Token into document
