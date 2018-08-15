@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -82,6 +83,8 @@ import com.workfusion.vds.sdk.api.nlp.processing.Processor;
 import com.workfusion.vds.sdk.nlp.component.util.DocumentFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class BaseLessonTest {
@@ -430,7 +433,23 @@ public class BaseLessonTest {
                             f.getValue());
                 });
 
-                assertThat(expectedElementFeature.getFeatures()).containsExactlyElementsOf(actualElementFeature.getFeatures());
+                assertArrayEquals(expectedElementFeature.getFeatures().stream()
+                                .sorted(Comparator.comparing(Feature::getName))
+                                .mapToDouble(Feature::getValue)
+                                .toArray(),
+                        actualElementFeature.getFeatures().stream()
+                                .sorted(Comparator.comparing(Feature::getName))
+                                .mapToDouble(Feature::getValue)
+                                .toArray(), 0.1);
+
+                assertThat(expectedElementFeature.getFeatures().stream()
+                                .sorted(Comparator.comparing(Feature::getName))
+                                .map(Feature::getName)
+                                .collect(Collectors.toList()))
+                        .containsExactlyElementsOf(actualElementFeature.getFeatures().stream()
+                                .sorted(Comparator.comparing(Feature::getName))
+                                .map(Feature::getName)
+                                .collect(Collectors.toList()));
             }
 
         }
