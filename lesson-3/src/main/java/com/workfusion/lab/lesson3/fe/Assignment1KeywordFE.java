@@ -21,7 +21,7 @@ public class Assignment1KeywordFE<T extends Element> implements FeatureExtractor
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "stateFeature";
+    private static final String FEATURE_NAME = "stateFeature";
 
     /**
      * Keywords list to use.

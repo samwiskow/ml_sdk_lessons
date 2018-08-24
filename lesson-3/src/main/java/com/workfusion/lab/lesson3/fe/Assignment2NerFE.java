@@ -25,7 +25,7 @@ public class Assignment2NerFE<T extends Element> implements FeatureExtractor<T> 
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "stateFeature";
+    private static final String FEATURE_NAME = "stateFeature";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {

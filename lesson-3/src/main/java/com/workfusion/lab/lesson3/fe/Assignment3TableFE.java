@@ -19,12 +19,12 @@ public class Assignment3TableFE<T extends Element> implements FeatureExtractor<T
     /**
      * The "row index" feature name.
      */
-    public static final String ROW_INDEX_FEATURE_NAME = "rowIndex";
+    private static final String ROW_INDEX_FEATURE_NAME = "rowIndex";
 
     /**
      * The "cell index" feature name.
      */
-    public static final String COLUMN_INDEX_FEATURE_NAME = "columnIndex";
+    private static final String COLUMN_INDEX_FEATURE_NAME = "columnIndex";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {

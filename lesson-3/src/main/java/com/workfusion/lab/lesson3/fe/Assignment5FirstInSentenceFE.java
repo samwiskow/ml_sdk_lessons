@@ -21,7 +21,7 @@ public class Assignment5FirstInSentenceFE<T extends Element> implements FeatureE
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "firstInSentenceFeature";
+    private static final String FEATURE_NAME = "firstInSentenceFeature";
 
     /**
      * The method is called once in the beginning of document processing.

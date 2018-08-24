@@ -19,7 +19,7 @@ public class Assignment4FirstInSentenceFE<T extends Element> implements FeatureE
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "firstInSentenceFeature";
+    private static final String FEATURE_NAME = "firstInSentenceFeature";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {
