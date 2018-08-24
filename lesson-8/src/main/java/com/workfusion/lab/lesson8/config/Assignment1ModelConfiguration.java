@@ -30,7 +30,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "([$\\$\\s:#_;'])";
+    private final static String TOKEN_REGEX = "([$\\$\\s:#_;'])";
 
     /**
      * Name of {@link Field} representing a total amount.
@@ -40,7 +40,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to match a total amount.
      */
-    public static final String TOTAL_AMOUNT_REGEX = "[0-9l]{1,3}[,\\.]?[0-9]{2,3}[\\.][0-9]*";
+    private static final String TOTAL_AMOUNT_REGEX = "[0-9l]{1,3}[,\\.]?[0-9]{2,3}[\\.][0-9]*";
 
     /**
      * Type for {@link NamedEntity} to use for total amount NER.

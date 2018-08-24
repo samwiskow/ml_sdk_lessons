@@ -27,7 +27,7 @@ public class Assignment2ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "([$\\$\\s:#_;'])";
+    private final static String TOKEN_REGEX = "([$\\$\\s:#_;'])";
 
     /**
      * Name of {@link Field} representing a client_address.
