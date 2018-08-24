@@ -42,12 +42,12 @@ class IsNumberIncludedFE<T extends Element> implements FeatureExtractor<T> {
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "isNumberPresent";
+    private static final String FEATURE_NAME = "isNumberPresent";
 
     /**
      * Regex pattern to match a number.
      */
-    public static final String NUMBER_REGEX = ".*\\d.*";
+    private static final String NUMBER_REGEX = ".*\\d.*";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {

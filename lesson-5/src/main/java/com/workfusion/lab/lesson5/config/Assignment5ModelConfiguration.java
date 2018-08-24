@@ -51,7 +51,7 @@ class IsNerPresentFE<T extends Element> implements FeatureExtractor<T> {
     /**
      * Name of {@link Feature} the feature extractor produces.
      */
-    public static final String FEATURE_NAME = "isNer";
+    private static final String FEATURE_NAME = "isNer";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {
