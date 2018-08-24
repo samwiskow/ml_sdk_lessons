@@ -15,7 +15,7 @@ public class Assignment2SentenceAnnotator implements Annotator<Document> {
     /**
      * Regex pattern to use for splitting a document into {@link Sentence} elements.
      */
-    public static final String SENTENCE_REGEXP = "[.!?]";
+    private static final String SENTENCE_REGEXP = "[.!?]";
 
     @Override
     public void process(Document document) {
