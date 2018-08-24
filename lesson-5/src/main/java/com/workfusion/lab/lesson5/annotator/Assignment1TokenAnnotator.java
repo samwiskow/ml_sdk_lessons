@@ -15,7 +15,7 @@ public class Assignment1TokenAnnotator implements Annotator<Document> {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public static final String TOKEN_REGEXP = "\\w+";
+    private static final String TOKEN_REGEXP = "\\w+";
 
     @Override
     public void process(Document document) {
