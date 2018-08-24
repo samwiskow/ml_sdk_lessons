@@ -10,7 +10,6 @@ import java.util.List;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.fe.annotation.FeatureName;
-import com.workfusion.vds.sdk.api.nlp.model.Cell;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
 

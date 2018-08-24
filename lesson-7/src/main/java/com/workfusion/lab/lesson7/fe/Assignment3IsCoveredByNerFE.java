@@ -4,9 +4,7 @@
 package com.workfusion.lab.lesson7.fe;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
