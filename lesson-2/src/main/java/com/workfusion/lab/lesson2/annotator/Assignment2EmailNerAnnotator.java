@@ -15,12 +15,12 @@ public class Assignment2EmailNerAnnotator implements Annotator<Document> {
     /**
      * Regex to match an email.
      */
-    public static final String EMAIL_REGEXP = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b";
+    private static final String EMAIL_REGEXP = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b";
 
     /**
      * Type for {@link NamedEntity} to use.
      */
-    public static final String NER_TYPE = "email";
+    private static final String NER_TYPE = "email";
 
     @Override
     public void process(Document document) {

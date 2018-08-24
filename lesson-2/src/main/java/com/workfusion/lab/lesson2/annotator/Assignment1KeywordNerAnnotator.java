@@ -31,7 +31,7 @@ public class Assignment1KeywordNerAnnotator implements Annotator<Document> {
     /**
      * Type for {@link NamedEntity} to use.
      */
-    public final static String NER_TYPE = "state";
+    private final static String NER_TYPE = "state";
 
     @Override
     public void process(Document document) {
