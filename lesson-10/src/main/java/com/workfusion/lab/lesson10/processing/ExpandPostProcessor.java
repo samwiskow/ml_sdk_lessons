@@ -12,7 +12,7 @@ public class ExpandPostProcessor implements Processor<IeDocument> {
     /**
      * Name of {@link Field} representing a field to process.
      */
-    public static final String FIELD_NAME = "somefield";
+    private static final String FIELD_NAME = "somefield";
 
     @Override
     public void process(IeDocument document) {
