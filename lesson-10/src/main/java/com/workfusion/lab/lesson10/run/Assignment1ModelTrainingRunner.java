@@ -20,7 +20,7 @@ public class Assignment1ModelTrainingRunner {
     /**
      * Input directory path to use.
      */
-    public final static String INPUT_DIR_PATH = "data/train";
+    private final static String INPUT_DIR_PATH = "data/train";
 
     /**
      * Output directory path to use.

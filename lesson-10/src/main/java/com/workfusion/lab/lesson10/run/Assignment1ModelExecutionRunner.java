@@ -17,12 +17,12 @@ public class Assignment1ModelExecutionRunner {
     /**
      * Model directory path to use.
      */
-    public final static String MODEL_DIR_PATH = "results_assignment1/training/output/model";
+    private final static String MODEL_DIR_PATH = "results_assignment1/training/output/model";
 
     /**
      * Input directory path to use.
      */
-    public final static String INPUT_DIR_PATH = "data/test";
+    private final static String INPUT_DIR_PATH = "data/test";
 
     /**
      * Output directory path to use.
