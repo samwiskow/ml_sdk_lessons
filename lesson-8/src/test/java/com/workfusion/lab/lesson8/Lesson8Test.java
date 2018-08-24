@@ -15,6 +15,7 @@ import com.workfusion.lab.lesson8.fe.IsNerPresentFE;
 import com.workfusion.lab.lesson8.fe.KeywordsPreviousLineFE;
 import com.workfusion.lab.lesson8.fe.NerAbsolutePositionFE;
 import com.workfusion.lab.lesson8.fe.SimilarityKeysInPrevLineFE;
+import com.workfusion.lab.lesson8.processing.TotalAmountPostProcessor;
 import com.workfusion.lab.lesson8.run.Assignment1ModelExecutionRunner;
 import com.workfusion.lab.lesson8.run.Assignment1ModelTrainingRunner;
 import com.workfusion.lab.lesson8.run.Assignment2ModelExecutionRunner;
@@ -25,6 +26,7 @@ import com.workfusion.vds.nlp.model.configuration.ConfigurationData;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldInfo;
 import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
+import com.workfusion.vds.sdk.api.nlp.model.Field;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
@@ -83,6 +85,18 @@ public class Lesson8Test extends BaseLessonTest {
         );
         // Checks the provided Features with the assignment 3 pattern
         checkElementFeatures(providedElementFeatures, "lesson_8_assignment_1_check_fe.json");
+
+        // Adds Fields into document based on gold tagging
+        addFields(document, Assignment1ModelConfiguration.FIELD_TOTAL_AMOUNT);
+
+        // Process postprocessor
+        processPostProcessor(document, new TotalAmountPostProcessor()); //Assignment post-processor
+
+        // Gets all Fields provided by the Processor to check
+        List<Field> fields = new ArrayList<>(document.findFields(Assignment1ModelConfiguration.FIELD_TOTAL_AMOUNT));
+
+        // Checks the provided fields with the assignment's pattern
+        checkElements(fields, "lesson_8_assignment_1_check_pp.json");
 
         // Obtains training statistics
         executeRunner(Assignment1ModelTrainingRunner.class);
