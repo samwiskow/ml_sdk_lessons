@@ -16,7 +16,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "[\\w]+";
+    private final static String TOKEN_REGEX = "[\\w]+";
 
     // TODO:  PUT YOU CODE HERE
 

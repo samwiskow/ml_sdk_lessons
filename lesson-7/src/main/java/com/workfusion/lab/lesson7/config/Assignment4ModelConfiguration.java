@@ -17,7 +17,7 @@ public class Assignment4ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
+    private final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
 
     /**
      * Name of {@link Field} representing a price.
@@ -27,7 +27,7 @@ public class Assignment4ModelConfiguration {
     /**
      * Regex pattern to match a price.
      */
-    public final static String PRICE_REGEX = "(\\$[0-9]{1,3}[.][0-9]{2})";
+    private final static String PRICE_REGEX = "(\\$[0-9]{1,3}[.][0-9]{2})";
 
     // TODO:  PUT YOU CODE HERE
 

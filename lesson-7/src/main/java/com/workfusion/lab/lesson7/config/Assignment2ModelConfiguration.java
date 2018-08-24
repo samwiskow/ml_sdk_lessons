@@ -17,7 +17,7 @@ public class Assignment2ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
+    private final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
 
     /**
      * Name of {@link Field} representing an invoice number.
@@ -27,7 +27,7 @@ public class Assignment2ModelConfiguration {
     /**
      * Regex pattern to match an invoice number.
      */
-    public final static String INVOICE_NUMBER_REGEX = "\\d{10}";
+    private final static String INVOICE_NUMBER_REGEX = "\\d{10}";
 
     // TODO:  PUT YOU CODE HERE
 
