@@ -30,7 +30,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
+    private final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
 
     /**
      * Name of {@link Field} representing an invoice number.
@@ -40,7 +40,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to match an invoice number.
      */
-    public final static String INVOICE_NUMBER_REGEX = "\\d{10}";
+    private final static String INVOICE_NUMBER_REGEX = "\\d{10}";
 
     /**
      * Name of {@link Field} representing a date.
@@ -50,7 +50,7 @@ public class Assignment1ModelConfiguration {
     /**
      * Regex pattern to match a date.
      */
-    public static final String DATE_REGEX = "(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\\s+\\d{1,2},\\s+\\d{4}";
+    private static final String DATE_REGEX = "(Jan(uary)?|Feb(ruary)?|Mar(ch)?|Apr(il)?|May|Jun(e)?|Jul(y)?|Aug(ust)?|Sep(tember)?|Oct(ober)?|Nov(ember)?|Dec(ember)?)\\s+\\d{1,2},\\s+\\d{4}";
 
     @Named("annotators")
     public List<Annotator<Document>> getAnnotators(IeConfigurationContext context) {

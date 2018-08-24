@@ -30,7 +30,7 @@ public class Assignment2ModelConfiguration {
     /**
      * Regex pattern to use for matching {@link Token} elements.
      */
-    public final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
+    private final static String TOKEN_REGEX = "[\\w@.,$%’-]+";
 
     /**
      * Name of {@link Field} representing a client name.
@@ -50,12 +50,12 @@ public class Assignment2ModelConfiguration {
     /**
      * Regex pattern to match a price.
      */
-    public final static String PRICE_REGEX = "(\\$[0-9]{1,3}[.][0-9]{2})";
+    private final static String PRICE_REGEX = "(\\$[0-9]{1,3}[.][0-9]{2})";
 
     /**
      * Regex pattern to match a client name.
      */
-    public static final String CLIENT_NAME_REGEX = "([A-Z][a-z ]{3,11}){3,4}";
+    private static final String CLIENT_NAME_REGEX = "([A-Z][a-z ]{3,11}){3,4}";
 
     @Named("annotators")
     public List<Annotator<Document>> getAnnotators(IeConfigurationContext context) {

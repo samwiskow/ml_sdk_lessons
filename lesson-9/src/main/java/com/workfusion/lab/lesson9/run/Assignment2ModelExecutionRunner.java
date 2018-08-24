@@ -27,12 +27,12 @@ public class Assignment2ModelExecutionRunner {
     /**
      * Input directory path to use.
      */
-    public final static String INPUT_DIR_PATH = "data/test";
+    private final static String INPUT_DIR_PATH = "data/test";
 
     /**
      * Output directory path to use.
      */
-    public final static String OUTPUT_DIR_PATH = "results_assignment2/extract";
+    private final static String OUTPUT_DIR_PATH = "results_assignment2/extract";
 
     public static void main(String[] args) throws Exception {
         System.setProperty("WORKFLOW_LOG_FOLDER", "./logs/");
