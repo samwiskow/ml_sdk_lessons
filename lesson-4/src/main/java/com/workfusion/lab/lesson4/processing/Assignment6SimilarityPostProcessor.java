@@ -23,7 +23,7 @@ public class Assignment6SimilarityPostProcessor implements Processor<IeDocument>
     /**
      * Threshold to use in string similarity comparison.
      */
-    public static final double SIMILARITY_THRESHOLD = 0.8;
+    private static final double SIMILARITY_THRESHOLD = 0.8;
 
     /**
      * Words list to use.
