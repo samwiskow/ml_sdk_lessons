@@ -25,7 +25,7 @@ public class Assignment6IsNerPresentFE<T extends Element> implements FeatureExtr
     /**
      * Email extension to identify emails we need to add features for.
      */
-    public static final String EMAIL_EXTENSION = ".com";
+    private static final String EMAIL_EXTENSION = ".com";
 
     @Override
     public Collection<Feature> extract(Document document, T element) {
