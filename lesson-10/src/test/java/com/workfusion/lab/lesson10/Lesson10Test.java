@@ -50,7 +50,7 @@ public class Lesson10Test extends BaseLessonTest {
         checkFieldStatistics(trainingStatistics, Assignment1ModelTrainingRunner.FIELD_INVOICE_NUMBER, 0.9, 0.6);
 
         executeRunner(Assignment1ModelExecutionRunner.class);
-        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment1ModelTrainingRunner.OUTPUT_DIR_PATH);
+        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment1ModelTrainingRunner.OUTPUT_DIR_PATH + "/extract");
 
         // Check the field statistics
         checkFieldStatistics(executionStatistics, Assignment1ModelTrainingRunner.FIELD_INVOICE_NUMBER, 0.9, 0.6);
@@ -108,7 +108,7 @@ public class Lesson10Test extends BaseLessonTest {
         checkFieldStatistics(trainingStatistics, Assignment2ModelTrainingRunner.FIELD_INVOICE_NUMBER, 0.9, 0.5);
         checkFieldStatistics(trainingStatistics, Assignment2ModelTrainingRunner.FIELD_PRODUCT, 0.9, 0.5);
 
-        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment2ModelTrainingRunner.OUTPUT_DIR_PATH);
+        Map<String, FieldStatistic> executionStatistics = getExecutionFieldStatistics(Assignment2ModelTrainingRunner.OUTPUT_DIR_PATH + "/extract");
 
         // Check the field statistics
         checkFieldStatistics(executionStatistics, Assignment2ModelTrainingRunner.FIELD_INVOICE_NUMBER, 0.9, 0.5);
