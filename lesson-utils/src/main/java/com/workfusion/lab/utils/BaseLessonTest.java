@@ -483,6 +483,12 @@ public class BaseLessonTest {
             }
 
             @Override
+            public boolean isReadOnly() {
+                noAccess();
+                return false;
+            }
+
+            @Override
             public String getText() {
                 noAccess();
                 return null;
@@ -785,7 +791,7 @@ public class BaseLessonTest {
                         }
                 );
 
-            } else if (path.endsWith("per-field-statistics.csv")) {
+            } else if (path.endsWith("per-field.csv")) {
                 FileReader fileReader = new FileReader(path);
                 CSVReader reader = new CSVReader(fileReader, ',');
                 reader.readNext(); //skip headers
@@ -824,9 +830,9 @@ public class BaseLessonTest {
         log("Finding the the model execution statistics file path to check ...");
         try {
             Optional<Path> trainedStatisticsFile = StreamSupport.stream(
-                    Files.newDirectoryStream(Paths.get(statsDir), "stats_*").spliterator(),
+                    Files.newDirectoryStream(Paths.get(statsDir + "/processing-result"), "statistics_*").spliterator(),
                     false).sorted((p1, p2) -> (int) (p2.toFile().lastModified() - p1.toFile().lastModified())).findFirst();
-            path = trainedStatisticsFile.get().toFile().getAbsolutePath() + "/per-field-statistics.csv";
+            path = trainedStatisticsFile.get().toFile().getAbsolutePath() + "/value_based/per-field.csv";
         } catch (Exception ioe) {
         }
         assertThat(path).isNotNull();
