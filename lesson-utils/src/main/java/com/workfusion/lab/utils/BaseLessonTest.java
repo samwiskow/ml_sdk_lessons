@@ -84,7 +84,6 @@ import com.workfusion.vds.sdk.nlp.component.util.DocumentFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class BaseLessonTest {
@@ -830,7 +829,7 @@ public class BaseLessonTest {
         log("Finding the the model execution statistics file path to check ...");
         try {
             Optional<Path> trainedStatisticsFile = StreamSupport.stream(
-                    Files.newDirectoryStream(Paths.get(statsDir + "/processing-result"), "statistics_*").spliterator(),
+                    Files.newDirectoryStream(Paths.get(statsDir + "/final"), "statistics_*").spliterator(),
                     false).sorted((p1, p2) -> (int) (p2.toFile().lastModified() - p1.toFile().lastModified())).findFirst();
             path = trainedStatisticsFile.get().toFile().getAbsolutePath() + "/value_based/per-field.csv";
         } catch (Exception ioe) {
