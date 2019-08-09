@@ -4,11 +4,14 @@
 package com.workfusion.lab.lesson4.processing;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import com.workfusion.vds.nlp.similarity.impl.JaroWinkler;
 import com.workfusion.vds.sdk.api.nlp.model.Field;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.processing.Processor;
+import com.workfusion.vds.sdk.nlp.component.processing.normalization.OcrAmountNormalizer;
 
 /**
  * Assignment 6
@@ -54,7 +57,21 @@ public class Assignment6SimilarityPostProcessor implements Processor<IeDocument>
     @Override
     public void process(IeDocument document) {
 
-        //TODO: PUT YOUR CODE HERE
+    	JaroWinkler jw = new JaroWinkler();
+    	Collection<Field> fields = document.findFields(FIELD_NAME);
+    	
+    	for(Field f : fields)
+    	{
+            String value = f.getValue();
+            WORDS.forEach(word ->{
+            	Double temp = jw.similarity(word, f.getValue());
+            	if(temp >= SIMILARITY_THRESHOLD) {
+            		f.setValue(word);
+            		return;
+            	}
+            });
+            
+    	}
 
     }
 

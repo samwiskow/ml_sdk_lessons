@@ -35,7 +35,11 @@ public class Assignment3IsCoveredByNerFE<T extends Element> implements FeatureEx
     public Collection<Feature> extract(Document document, T element) {
         List<Feature> result = new ArrayList<>();
 
-        // TODO:  PUT YOU CODE HERE
+        List<NamedEntity> lines = document.findCovering(NamedEntity.class, element);
+        
+        for(NamedEntity l : lines) {
+    		result.add(new Feature(l.getType(), 1.0));
+        }
 
         return result;
     }

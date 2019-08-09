@@ -3,14 +3,22 @@
  */
 package com.workfusion.lab.lesson6.config;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
+import com.workfusion.vds.sdk.api.hypermodel.annotation.Named;
+import com.workfusion.vds.sdk.api.nlp.configuration.IeConfigurationContext;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
+import com.workfusion.vds.sdk.nlp.component.annotator.ner.AhoCorasickDictionaryNerAnnotator;
+import com.workfusion.vds.sdk.nlp.component.annotator.ner.BaseRegexNerAnnotator;
+import com.workfusion.vds.sdk.nlp.component.dictionary.CsvDictionaryKeywordProvider;
 
 /**
  * Assignment 2
@@ -18,7 +26,18 @@ import com.workfusion.vds.sdk.api.nlp.model.Element;
 @ModelConfiguration
 public class Assignment2ModelConfiguration {
 
-    // TODO:  PUT YOU CODE HERE
+	@Named("featureExtractors")
+    public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
+		switch (context.getField().getType()) {
+        case FREE_TEXT: {
+            return Arrays.asList(new IsAllLettersUpperCase<Element>());
+        }
+        case INVOICE_TYPE: {
+            return Arrays.asList(new IsOnlyNumberInTokenFE<Element>());
+        }
+    }
+        return null;
+    }
 
     public static class IsAllLettersUpperCase<T extends Element> implements FeatureExtractor<T> {
 

@@ -42,7 +42,12 @@ public class IsNerPresentFE<T extends Element> implements FeatureExtractor<T> {
     public Collection<Feature> extract(Document document, T element) {
         List<Feature> result = new ArrayList<>();
 
-        // TODO:  PUT YOU CODE HERE
+        List<NamedEntity> namedEntity = document.findCovering(NamedEntity.class, element);
+        for (NamedEntity ner : namedEntity) {
+            //if (ner.getType().equals(nerType)) {
+                result.add(new Feature(FEATURE_NAME, 1.0));
+            //}
+        }
 
         return result;
     }

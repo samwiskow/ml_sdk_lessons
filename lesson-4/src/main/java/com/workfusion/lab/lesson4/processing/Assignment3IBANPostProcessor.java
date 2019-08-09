@@ -3,6 +3,9 @@
  */
 package com.workfusion.lab.lesson4.processing;
 
+import java.util.Collection;
+
+import org.apache.commons.validator.routines.checkdigit.CheckDigitException;
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 
 import com.workfusion.vds.sdk.api.nlp.model.Field;
@@ -27,7 +30,16 @@ public class Assignment3IBANPostProcessor implements Processor<IeDocument> {
     @Override
     public void process(IeDocument document) {
 
-        //TODO: PUT YOUR CODE HERE
+    	Collection<Field> fields = document.findFields(FIELD_NAME);
+    	
+    	for(Field f : fields) {
+    		try {
+				if(!checker.isValid(f.getValue()))
+					document.remove(f);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+    	}
 
     }
 

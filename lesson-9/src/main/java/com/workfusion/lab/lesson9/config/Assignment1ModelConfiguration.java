@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.workfusion.lab.lesson9.fe.IsNerPresentFE;
+import com.workfusion.lab.lesson9.fe.KeywordsPreviousLineFE;
+import com.workfusion.lab.lesson9.process.AnswerTypeDatePostProcessor;
+import com.workfusion.lab.lesson9.process.Assignment1DatePostProcessor;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.Named;
 import com.workfusion.vds.sdk.api.nlp.annotator.Annotator;
+import com.workfusion.vds.sdk.api.nlp.configuration.FieldType;
 import com.workfusion.vds.sdk.api.nlp.configuration.IeConfigurationContext;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
@@ -18,6 +23,10 @@ import com.workfusion.vds.sdk.api.nlp.model.Field;
 import com.workfusion.vds.sdk.api.nlp.model.IeDocument;
 import com.workfusion.vds.sdk.api.nlp.model.Token;
 import com.workfusion.vds.sdk.api.nlp.processing.Processor;
+import com.workfusion.vds.sdk.nlp.component.annotator.EntityBoundaryAnnotator;
+import com.workfusion.vds.sdk.nlp.component.annotator.ner.BaseRegexNerAnnotator;
+import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.MatcherTokenAnnotator;
+import com.workfusion.vds.sdk.nlp.component.annotator.tokenizer.SplitterTokenAnnotator;
 
 /**
  * The model configuration class.
@@ -56,26 +65,46 @@ public class Assignment1ModelConfiguration {
     public List<Annotator<Document>> getAnnotators(IeConfigurationContext context) {
         List<Annotator<Document>> annotators = new ArrayList<>();
 
-        // TODO:  PUT YOU CODE HERE
+        annotators.add(new MatcherTokenAnnotator(TOKEN_REGEX));
+        annotators.add(new EntityBoundaryAnnotator());
+        
+        switch (context.getField().getCode()) {
+	        case FIELD_INVOICE_NUMBER: {
+	            annotators.add(BaseRegexNerAnnotator.getJavaPatternRegexNerAnnotator(FIELD_INVOICE_NUMBER, INVOICE_NUMBER_REGEX));
+	            break;
+	        }
+	        case FIELD_DATE: {
+	            annotators.add(BaseRegexNerAnnotator.getJavaPatternRegexNerAnnotator(FIELD_DATE, DATE_REGEX));
+	            break;
+	        }
+        }
 
         return annotators;
     }
 
     @Named("featureExtractors")
     public List<FeatureExtractor<Element>> getFeatureExtractors(IeConfigurationContext context) {
-        List<FeatureExtractor<Element>> featuresExtractors = new ArrayList<>();
-
-        // TODO:  PUT YOU CODE HERE
+        List<FeatureExtractor<Element>> featuresExtractors = new ArrayList<>(); 	
+        
+        switch (context.getField().getCode()) {
+        case FIELD_INVOICE_NUMBER: {
+            featuresExtractors.add(new IsNerPresentFE<Element>(FIELD_INVOICE_NUMBER));
+            break;
+        }
+        case FIELD_DATE: {
+            featuresExtractors.add(new IsNerPresentFE<Element>(FIELD_DATE));
+            break;
+        }
+    }
 
         return featuresExtractors;
     }
 
     @Named("processors")
     public List<Processor<IeDocument>> getProcessors() {
-
-        // TODO:  PUT YOU CODE HERE (IF NEEDED)
-
-        return Arrays.asList();
+    	List<Processor<IeDocument>> processors = new ArrayList<Processor<IeDocument>>();
+        processors.add(new Assignment1DatePostProcessor());
+        return processors;
     }
 
 }

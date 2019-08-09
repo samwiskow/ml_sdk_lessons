@@ -11,6 +11,7 @@ import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
 import com.workfusion.vds.sdk.api.nlp.model.Element;
+import com.workfusion.vds.sdk.api.nlp.model.NamedEntity;
 
 /**
  * Determines if focus annotation is NER and the last NER in the document
@@ -32,7 +33,13 @@ public class NerAbsolutePositionFE<T extends Element> implements FeatureExtracto
     public Collection<Feature> extract(Document document, T element) {
         List<Feature> result = new ArrayList<>();
 
-        // TODO:  PUT YOU CODE HERE
+        List<NamedEntity> neList = (List<NamedEntity>) document.findAll(NamedEntity.class);
+        String id = neList.get(neList.size()-1).getId();   
+        List<NamedEntity> coveredNe = document.findCovering(NamedEntity.class, element);
+        
+        coveredNe.forEach(c -> {
+        	if (c.getId().equals(id)) result.add(new Feature(FEATURE_NAME, 1.0));
+        });
 
         return result;
     }

@@ -3,6 +3,7 @@
  */
 package com.workfusion.lab.lesson3.fe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -43,9 +44,13 @@ public class Assignment1KeywordFE<T extends Element> implements FeatureExtractor
     @Override
     public Collection<Feature> extract(Document document, T element) {
 
-        //TODO: PUT YOUR CODE HERE
-
-        return Collections.emptyList();
+    	List<Feature> features = new ArrayList<>();
+    	for(String s:STATES) {
+	        if (element.getText().matches(s)) {
+	            features.add(new Feature(FEATURE_NAME, 1.0));
+	        }
+    	}
+        return features;
     }
 
 }

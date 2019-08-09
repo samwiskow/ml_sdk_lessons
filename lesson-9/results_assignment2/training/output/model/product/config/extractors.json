@@ -1,0 +1,1 @@
+{"@type":"java.util.ArrayList","@items":[{"@type":"com.workfusion.lab.lesson9.fe.MatchFullColumnOrRowWithSpecifiedHeaderFeatureExtractror","FEATURE_NAME":"product_match_table_column_header","HEADER_KEYWORDS":{"@type":"java.util.HashSet","@items":["product"]},"HEADERS_MAPPING":{"@type":"java.util.TreeMap"},"IS_USED_FOR_COLUMN":true}]}

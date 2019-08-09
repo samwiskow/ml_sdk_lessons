@@ -3,6 +3,8 @@
  */
 package com.workfusion.lab.lesson4.processing;
 
+import java.util.Collection;
+
 import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 
 import com.workfusion.vds.sdk.api.nlp.model.Field;
@@ -32,7 +34,14 @@ public class Assignment4AddCountryPostProcessor implements Processor<IeDocument>
     @Override
     public void process(IeDocument document) {
 
-        //TODO: PUT YOUR CODE HERE
+    	Collection<Field> fields = document.findFields(FIELD_IBAN);
+    	
+    	for(Field f : fields) {
+			document.add(Field.descriptor()
+					.setName(FIELD_COUNTRY)
+					.setValue(f.getValue().substring(0,2))
+					.setScore(f.getScore()));
+    	}
 
     }
 

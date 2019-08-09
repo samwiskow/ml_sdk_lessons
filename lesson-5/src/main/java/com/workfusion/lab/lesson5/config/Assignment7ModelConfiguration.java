@@ -4,8 +4,13 @@
 package com.workfusion.lab.lesson5.config;
 
 import java.util.Collection;
+import java.util.List;
 
+import com.workfusion.lab.lesson5.fe.Assignment6IsNerPresentFE;
+import com.workfusion.vds.sdk.api.hypermodel.annotation.Import;
 import com.workfusion.vds.sdk.api.hypermodel.annotation.ModelConfiguration;
+import com.workfusion.vds.sdk.api.hypermodel.annotation.Named;
+import com.workfusion.vds.sdk.api.nlp.configuration.IeConfigurationContext;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
 import com.workfusion.vds.sdk.api.nlp.model.Document;
@@ -14,14 +19,22 @@ import com.workfusion.vds.sdk.api.nlp.model.Token;
 
 import static java.util.Collections.singletonList;
 
+import java.util.Arrays;
+
 /**
  * Assignment 7
  */
 @ModelConfiguration
-// TODO:  PUT YOU CODE HERE
+@Import(configurations = {
+	       @Import.Configuration(Assignment5ModelConfiguration.class)
+	})
 public class Assignment7ModelConfiguration {
 
-    // TODO:  PUT YOU CODE HERE
+	@Named("featureExtractor")
+    public List<FeatureExtractor<Element>> getFeatureExtractor(IeConfigurationContext context) {
+        //TODO configure feature extractors here.
+        return Arrays.asList(new IsNumberIncludedFE<Element>());
+    }
 
 }
 

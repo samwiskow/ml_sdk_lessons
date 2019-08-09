@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.workfusion.vds.nlp.similarity.StringSimilarityUtils;
 import com.workfusion.vds.sdk.api.nlp.annotation.DependsOn;
 import com.workfusion.vds.sdk.api.nlp.fe.Feature;
 import com.workfusion.vds.sdk.api.nlp.fe.FeatureExtractor;
@@ -57,8 +60,26 @@ public class SimilarityKeysInPrevLineFE<T extends Element> implements FeatureExt
     @Override
     public Collection<Feature> extract(Document document, T element) {
         List<Feature> result = new ArrayList<>();
+        
+        List<Line> lines = document.findPrevious(Line.class, element, 1);
 
-        // TODO:  PUT YOU CODE HERE
+        if(lines.size()>0) {
+           /* double retValue =   **StringSimilarityUtils.cosine**(keyword,lines.get(0).getText().toString().trim().toLowerCase());
+           if(retValue > 0.0)
+               result.add(new Feature(FEATURE_NAME, retValue));*/
+        	String lineValue = lines.get(0).getText().toLowerCase();
+        	String[] spr = StringUtils.splitPreserveAllTokens(lineValue);
+        	double res =0.0;
+        	for (String s: spr) {
+	        	double retValue = StringSimilarityUtils.cosine(keyword, s);
+	        	if (res < retValue) {
+	        		res = retValue;
+	        	}
+        	}
+        	if (res > 0.0) {
+        		result.add(new Feature(FEATURE_NAME, res));
+        	}
+        }
 
         return result;
     }
