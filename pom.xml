@@ -35,14 +35,6 @@
 		<module>lesson-10</module>
     </modules>
 	
-	<servers>
-	     <server>
-		 <id>mcb-repo</id>
-		 <username>bcbdeploy</username>
-		 <password>Workfusion!5</password>
-	     </server>
-	</servers>
-	
     <repositories>
         <repository>
             <id>mcb-repo</id>             
